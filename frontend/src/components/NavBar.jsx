@@ -7,7 +7,8 @@ const links = [
   { to: '/evaluacion-insumo', label: 'Eval. Insumo',      icon: '📦', roles: ['admin','evaluador_compras'] },
   { to: '/historial',         label: 'Historial Servicios', icon: '☰' },
   { to: '/historial-insumos', label: 'Historial Insumos', icon: '☰' },
-  { to: '/especificaciones',  label: 'Espec. Técnicas',   icon: '📄' },
+  { to: '/especificaciones',      label: 'Espec. Técnicas',       icon: '📄' },
+  { to: '/listado-proveedores',   label: 'Proveed. Críticos',     icon: '🏭' },
 ]
 
 const adminLinks = [

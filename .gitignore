@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Build frontend (Render lo genera solo)
+frontend/dist/
+
+# Variables de entorno — NUNCA subir al repo
+backend/.env
+.env
+
+# Logs
+logs/
+*.log
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+
+# PM2 (solo para uso local)
+ecosystem.config.js
+iniciar-aubasa.bat
+crear-tarea-inicio.ps1

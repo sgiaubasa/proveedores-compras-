@@ -10,6 +10,8 @@ import HistorialInsumos from './pages/HistorialInsumos'
 import EspecTecnicas from './pages/EspecTecnicas'
 import AltaProveedor from './pages/AltaProveedor'
 import Usuarios from './pages/Usuarios'
+import ListadoProveedores from './pages/ListadoProveedores'
+import ListadoProveedoresEditar from './pages/ListadoProveedoresEditar'
 
 function ProtectedRoute({ children, roles }) {
   const { usuario } = useAuth()
@@ -75,6 +77,15 @@ function AppRoutes() {
       <Route path="/usuarios" element={
         <ProtectedRoute roles={['admin']}>
           <Layout><Usuarios /></Layout>
+        </ProtectedRoute>
+      } />
+
+      <Route path="/listado-proveedores" element={
+        <ProtectedRoute><Layout><ListadoProveedores /></Layout></ProtectedRoute>
+      } />
+      <Route path="/listado-proveedores/:sector" element={
+        <ProtectedRoute roles={['admin','evaluador_compras']}>
+          <Layout><ListadoProveedoresEditar /></Layout>
         </ProtectedRoute>
       } />
 
