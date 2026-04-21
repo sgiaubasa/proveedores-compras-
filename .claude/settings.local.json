@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(node -e \"require\\('./models/Usuario'\\); require\\('./models/EspecTecnica'\\); require\\('./models/Evaluacion'\\); require\\('./models/Proveedor'\\); require\\('./routes/auth'\\); require\\('./routes/usuarios'\\); require\\('./routes/evaluaciones'\\); require\\('./routes/especTecnicas'\\); require\\('./routes/proveedores'\\); console.log\\('✓ Todos los módulos OK'\\)\")",
+      "Bash(node seed/seedETs.js)",
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(taskkill /F /IM node.exe /T)",
+      "Bash(exit 0)",
+      "Bash(fuser -k 3001/tcp)",
+      "Bash(fuser -k 5173/tcp)",
+      "Bash(fuser -k 5174/tcp)",
+      "Bash(xargs kill *)",
+      "Bash(netstat -tlnp)",
+      "Bash(awk '{print $2}')",
+      "Bash(npx kill-port *)",
+      "Bash(curl -s http://localhost:3001/api/health)",
+      "Bash(curl -s http://localhost:3001/api/usuarios)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(ipconfig)",
+      "Bash(npm list *)",
+      "Bash(pm2 --version)",
+      "Bash(pm2 start *)",
+      "Bash(curl -s http://localhost:3001/api/auth/login -X POST -H \"Content-Type: application/json\" -d '{\"email\":\"test\",\"password\":\"test\"}')",
+      "Bash(pm2 save *)",
+      "Bash(pm2 startup *)",
+      "Bash(schtasks /Create /TN \"AUBASA-Backend\" /TR \"\\\\\"C:\\\\Aplicacion compras\\\\iniciar-aubasa.bat\\\\\"\" /SC ONLOGON /RU \"sergio.montes\" /F)",
+      "Bash(cmd /c 'schtasks /Create /TN \"AUBASA-Backend\" /TR \"\\\\\"C:\\\\\\\\Aplicacion compras\\\\\\\\iniciar-aubasa.bat\\\\\"\" /SC ONLOGON /F')",
+      "Bash(pm2 restart *)",
+      "Bash(pm2 logs *)"
+    ]
+  }
+}
