@@ -186,7 +186,7 @@ export default function AltaProveedor() {
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">Ponderación % *</label>
                   <input type="number" value={it.ponderacion} onChange={e => actualizarItem(idx, 'ponderacion', e.target.value)}
-                    min="1" max="100" step="5" required placeholder="ej: 20"
+                    min="1" max="100" step="1" required placeholder="ej: 20"
                     className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-300" />
                 </div>
               </div>
