@@ -37,6 +37,21 @@ router.get('/:id', auth, async (req, res) => {
   res.json(ev)
 })
 
+// Editar evaluación de insumo (solo admin)
+router.put('/:id', auth, roles('admin'), async (req, res) => {
+  try {
+    const ev = await EvalIns.findById(req.params.id)
+    if (!ev) return res.status(404).json({ error: 'No encontrada' })
+    const campos = ['proveedorNombre','descripcionInsumo','trimestre','anio','areas','obs',
+                    'cotizacion','calidad_cantidad','plazo_entrega','seriedad','tiempo_respuesta']
+    campos.forEach(c => { if (req.body[c] !== undefined) ev[c] = req.body[c] })
+    await ev.save()   // recalcula nota_final via pre-save
+    res.json(ev)
+  } catch (e) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
 // Eliminar (solo admin)
 router.delete('/:id', auth, roles('admin'), async (req, res) => {
   await EvalIns.findByIdAndDelete(req.params.id)

@@ -48,6 +48,24 @@ router.get('/:id', auth, async (req, res) => {
   res.json(ev)
 })
 
+// Editar evaluación (solo admin)
+router.put('/:id', auth, roles('admin'), async (req, res) => {
+  try {
+    const ev = await Eval.findById(req.params.id)
+    if (!ev) return res.status(404).json({ error: 'No encontrada' })
+    const { trimestre, anio, areas, obs, items } = req.body
+    if (trimestre) ev.trimestre = trimestre
+    if (anio)      ev.anio      = anio
+    if (areas)     ev.areas     = areas
+    if (obs !== undefined) ev.obs = obs
+    if (items)     ev.items     = items
+    await ev.save()   // recalcula nota_final via pre-save
+    res.json(ev)
+  } catch (e) {
+    res.status(400).json({ error: e.message })
+  }
+})
+
 // Eliminar (solo admin)
 router.delete('/:id', auth, roles('admin'), async (req, res) => {
   await Eval.findByIdAndDelete(req.params.id)

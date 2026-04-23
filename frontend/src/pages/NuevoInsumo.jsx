@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import { TRIMESTRES, TRIM_LABELS, estadoNota } from '../utils/scoring'
 import ScoreBar from '../components/ScoreBar'
-
-const AREAS = ['Compras','Área Técnica','GO','GC','CAE','SAV','JAV','CCM','SGI','Otro']
+import AreasSelector from '../components/AreasSelector'
+import PuntajeSelector from '../components/PuntajeSelector'
 
 const CRITERIOS = [
   { key: 'cotizacion',       label: 'Cotización',          ponderacion: 0.20, desc: 'Precio competitivo y acorde al mercado' },
@@ -13,56 +13,6 @@ const CRITERIOS = [
   { key: 'seriedad',         label: 'Seriedad',            ponderacion: 0.10, desc: 'Compromiso, formalidad y cumplimiento de condiciones pactadas' },
   { key: 'tiempo_respuesta', label: 'Tiempo de respuesta', ponderacion: 0.20, desc: 'Respuesta ante consultas, reclamos o modificaciones' }
 ]
-
-function PuntajeSelector({ valor, onChange }) {
-  const color = v =>
-    v >= 4 ? 'bg-green-600 border-green-600 text-white'
-    : v >= 3 ? 'bg-amber-500 border-amber-500 text-white'
-    : 'bg-red-500 border-red-500 text-white'
-
-  return (
-    <div className="flex items-center gap-1.5 flex-wrap">
-      {[1,2,3,4,5].map(v => (
-        <button key={v} type="button" onClick={() => onChange(v)}
-          className={`w-9 h-9 rounded-lg border-2 text-sm font-bold transition-all ${
-            valor === v ? color(v) : 'border-gray-300 text-gray-600 hover:border-blue-400'
-          }`}>
-          {v}
-        </button>
-      ))}
-      <input
-        type="number" min="1" max="5" step="0.5"
-        value={valor ?? ''}
-        placeholder="4.5"
-        onChange={e => {
-          const v = parseFloat(e.target.value)
-          if (e.target.value === '') onChange(undefined)
-          else if (!isNaN(v) && v >= 1 && v <= 5) onChange(v)
-        }}
-        className="w-16 text-sm border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-400 text-center"
-      />
-    </div>
-  )
-}
-
-function AreasSelector({ value, onChange }) {
-  const toggle = a =>
-    onChange(value.includes(a) ? value.filter(x => x !== a) : [...value, a])
-  return (
-    <div className="flex flex-wrap gap-2">
-      {AREAS.map(a => (
-        <label key={a} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-sm transition-colors ${
-          value.includes(a)
-            ? 'bg-blue-600 border-blue-600 text-white font-medium'
-            : 'border-gray-300 text-gray-600 hover:border-blue-400'
-        }`}>
-          <input type="checkbox" checked={value.includes(a)} onChange={() => toggle(a)} className="sr-only" />
-          {a}
-        </label>
-      ))}
-    </div>
-  )
-}
 
 export default function NuevoInsumo() {
   const navigate  = useNavigate()
