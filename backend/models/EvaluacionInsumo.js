@@ -21,7 +21,7 @@ const evaluacionInsumoSchema = new mongoose.Schema({
   fecha:            { type: Date, required: true },
   trimestre:        { type: String, enum: ['1T','2T','3T','4T'], required: true },
   anio:             { type: Number, required: true },
-  area:             String,
+  areas:            [String],
 
   // Criterios con ponderación fija
   cotizacion:       criterioSchema,

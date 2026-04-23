@@ -5,7 +5,57 @@ import { useAuth } from '../context/AuthContext'
 import { TRIMESTRES, TRIM_LABELS, estadoNota } from '../utils/scoring'
 import ScoreBar from '../components/ScoreBar'
 
-const AREAS = ['GO','GC','CAE','Compras','SAV','JAV','CCM','SGI','Otro']
+const AREAS = ['Compras','Área Técnica','GO','GC','CAE','SAV','JAV','CCM','SGI','Otro']
+
+function PuntajeSelector({ valor, onChange }) {
+  const color = v =>
+    v >= 4 ? 'bg-green-600 border-green-600 text-white'
+    : v >= 3 ? 'bg-amber-500 border-amber-500 text-white'
+    : 'bg-red-500 border-red-500 text-white'
+
+  return (
+    <div className="flex items-center gap-2 flex-wrap">
+      {[1,2,3,4,5].map(v => (
+        <button key={v} type="button" onClick={() => onChange(v)}
+          className={`w-10 h-10 rounded-lg border-2 text-sm font-bold transition-all ${
+            valor === v ? color(v) : 'border-gray-300 text-gray-600 hover:border-blue-400'
+          }`}>
+          {v}
+        </button>
+      ))}
+      <input
+        type="number" min="1" max="5" step="0.5"
+        value={valor ?? ''}
+        placeholder="ej: 4.5"
+        onChange={e => {
+          const v = parseFloat(e.target.value)
+          if (e.target.value === '') onChange(undefined)
+          else if (!isNaN(v) && v >= 1 && v <= 5) onChange(v)
+        }}
+        className="w-20 text-sm border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-1 focus:ring-blue-400 text-center"
+      />
+    </div>
+  )
+}
+
+function AreasSelector({ value, onChange }) {
+  const toggle = a =>
+    onChange(value.includes(a) ? value.filter(x => x !== a) : [...value, a])
+  return (
+    <div className="flex flex-wrap gap-2">
+      {AREAS.map(a => (
+        <label key={a} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-sm transition-colors ${
+          value.includes(a)
+            ? 'bg-blue-600 border-blue-600 text-white font-medium'
+            : 'border-gray-300 text-gray-600 hover:border-blue-400'
+        }`}>
+          <input type="checkbox" checked={value.includes(a)} onChange={() => toggle(a)} className="sr-only" />
+          {a}
+        </label>
+      ))}
+    </div>
+  )
+}
 
 export default function NuevaEvaluacion() {
   const [params]  = useSearchParams()
@@ -17,17 +67,15 @@ export default function NuevaEvaluacion() {
   const [saving, setSaving]     = useState(false)
   const [error, setError]       = useState(null)
 
-  // Paso 1
-  const [etId, setEtId]         = useState(params.get('etId') || '')
+  const [etId, setEtId]           = useState(params.get('etId') || '')
   const [trimestre, setTrimestre] = useState('')
-  const [anio, setAnio]         = useState(new Date().getFullYear())
-  const [area, setArea]         = useState('')
-  const [obs, setObs]           = useState('')
+  const [anio, setAnio]           = useState(new Date().getFullYear())
+  const [areas, setAreas]         = useState([])
+  const [obs, setObs]             = useState('')
 
-  // Paso 2
   const [etData, setEtData]     = useState(null)
-  const [puntajes, setPuntajes] = useState({})   // { n: puntaje(1-5) }
-  const [obsItems, setObsItems] = useState({})   // { n: obs }
+  const [puntajes, setPuntajes] = useState({})
+  const [obsItems, setObsItems] = useState({})
 
   useEffect(() => {
     api.get('/espec-tecnicas').then(r => {
@@ -40,11 +88,9 @@ export default function NuevaEvaluacion() {
     if (etId) api.get(`/espec-tecnicas/${etId}`).then(r => setEtData(r.data))
   }, [etId])
 
-  // Nota final preview
   const notaPreview = (() => {
     if (!etData) return null
-    const conPuntaje = etData.items.filter(it => puntajes[it.n])
-    if (conPuntaje.length < etData.items.length) return null
+    if (etData.items.some(it => puntajes[it.n] === undefined)) return null
     return etData.items.reduce((sum, it) => sum + (puntajes[it.n] * it.ponderacion), 0)
   })()
 
@@ -58,7 +104,7 @@ export default function NuevaEvaluacion() {
   }
 
   const handleGuardar = async () => {
-    const faltantes = etData.items.filter(it => !puntajes[it.n])
+    const faltantes = etData.items.filter(it => puntajes[it.n] === undefined)
     if (faltantes.length) return setError(`Faltan puntuar ${faltantes.length} ítem(s)`)
     setSaving(true)
     setError(null)
@@ -70,7 +116,7 @@ export default function NuevaEvaluacion() {
         ponderacion: it.ponderacion,
         obs:         obsItems[it.n] || ''
       }))
-      await api.post('/evaluaciones', { etId, trimestre, anio, area, obs, items })
+      await api.post('/evaluaciones', { etId, trimestre, anio, areas, obs, items })
       navigate('/historial')
     } catch (e) {
       setError(e.response?.data?.error || 'Error al guardar')
@@ -85,7 +131,6 @@ export default function NuevaEvaluacion() {
     <div className="p-8 max-w-3xl">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Nueva Evaluación de Servicio</h1>
 
-      {/* Pasos */}
       <div className="flex items-center gap-3 mb-8">
         {[1, 2].map(n => (
           <div key={n} className="flex items-center gap-2">
@@ -132,12 +177,11 @@ export default function NuevaEvaluacion() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Área evaluadora</label>
-            <select value={area} onChange={e => setArea(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
-              <option value="">Seleccionar…</option>
-              {AREAS.map(a => <option key={a}>{a}</option>)}
-            </select>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Área(s) evaluadora(s)
+              {areas.length > 0 && <span className="ml-2 text-xs text-blue-600 font-normal">{areas.join(' + ')}</span>}
+            </label>
+            <AreasSelector value={areas} onChange={setAreas} />
           </div>
 
           <div>
@@ -157,13 +201,15 @@ export default function NuevaEvaluacion() {
       {/* PASO 2 — Puntuación */}
       {paso === 2 && etData && (
         <div className="space-y-4">
-          {/* Header resumen */}
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
             <div className="flex justify-between items-start">
               <div>
                 <span className="font-bold text-blue-800">{etData.codigo}</span>
                 <span className="text-blue-700 ml-2 font-medium">{etData.nombre}</span>
                 <p className="text-sm text-blue-600 mt-0.5">{TRIM_LABELS[trimestre]} · {anio}</p>
+                {areas.length > 0 && (
+                  <p className="text-xs text-blue-500 mt-0.5">Áreas: {areas.join(' + ')}</p>
+                )}
               </div>
               {notaPreview !== null && (
                 <div className="text-right">
@@ -174,23 +220,18 @@ export default function NuevaEvaluacion() {
                 </div>
               )}
             </div>
-            {notaPreview !== null && (
-              <div className="mt-3">
-                <ScoreBar nota={notaPreview} />
-              </div>
-            )}
+            {notaPreview !== null && <div className="mt-3"><ScoreBar nota={notaPreview} /></div>}
           </div>
 
-          {/* Criterio de referencia */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-xs text-gray-600 flex gap-4">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-xs text-gray-600 flex gap-4 flex-wrap">
             <span>📌 <strong>1</strong> = Muy deficiente</span>
             <span><strong>2</strong> = Deficiente</span>
             <span><strong>3</strong> = Regular</span>
             <span><strong>4</strong> = Bueno</span>
             <span><strong>5</strong> = Excelente</span>
+            <span className="text-blue-600">· También podés escribir decimales (ej: 4.5)</span>
           </div>
 
-          {/* Ítems */}
           {etData.items.map(item => (
             <div key={item.n} className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
               <div className="flex items-start gap-3">
@@ -204,30 +245,17 @@ export default function NuevaEvaluacion() {
                 </span>
               </div>
 
-              {/* Selector 1-5 */}
-              <div className="flex gap-2 ml-10">
-                {[1,2,3,4,5].map(v => (
-                  <button key={v} type="button" onClick={() => setPuntajes(p => ({...p, [item.n]: v}))}
-                    className={`w-10 h-10 rounded-lg border-2 text-sm font-bold transition-all ${
-                      puntajes[item.n] === v
-                        ? v >= 4 ? 'bg-green-600 border-green-600 text-white'
-                          : v >= 3 ? 'bg-amber-500 border-amber-500 text-white'
-                          : 'bg-red-500 border-red-500 text-white'
-                        : 'border-gray-300 text-gray-600 hover:border-blue-400'
-                    }`}>
-                    {v}
-                  </button>
-                ))}
-                {puntajes[item.n] && (
-                  <span className="self-center text-xs text-gray-500 ml-1">
-                    Subtotal: <strong>{(puntajes[item.n] * item.ponderacion).toFixed(2)}</strong>
-                  </span>
+              <div className="ml-10 space-y-1">
+                <PuntajeSelector valor={puntajes[item.n]} onChange={v => setPuntajes(p => ({...p, [item.n]: v}))} />
+                {puntajes[item.n] !== undefined && (
+                  <p className="text-xs text-gray-500">
+                    Puntaje: <strong>{puntajes[item.n]}</strong> · Subtotal: <strong>{(puntajes[item.n] * item.ponderacion).toFixed(2)}</strong>
+                  </p>
                 )}
               </div>
 
-              {/* Obs del ítem */}
               <div className="ml-10">
-                <input type="text" placeholder="Observación (opcional)…" value={obsItems[item.n] || ''}
+                <input type="text" placeholder="Observación del ítem (opcional)…" value={obsItems[item.n] || ''}
                   onChange={e => setObsItems(o => ({...o, [item.n]: e.target.value}))}
                   className="w-full text-sm border border-gray-200 rounded px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-400" />
               </div>

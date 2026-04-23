@@ -14,7 +14,7 @@ const evaluacionSchema = new mongoose.Schema({
   userId:    { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
   trimestre: { type: String, enum: ['1T','2T','3T','4T'], required: true },
   anio:      { type: Number, required: true },
-  area:      String,
+  areas:     [String],
   items:     [itemResultSchema],
   obs:       String,
   // Calculados al guardar
