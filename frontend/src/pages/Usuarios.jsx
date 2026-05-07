@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import api from '../api'
 
 const ROLES  = ['admin','evaluador_tecnico','evaluador_compras','lectura']
 const AREAS  = ['GO','GC','CAE','Compras','SAV','JAV','CCM','SGI','Otro']
-const SECTORES = [
+const SECTORES_BASE = [
+  'Gerencia de Operaciones',
+  'Gerencia Comercial',
+  'Gerencia de Prevención y Seguridad Integral',
+  'Gerencia de Sistemas',
+  'Gerencia de Mantenimiento',
   'Gerencia de Recursos Humanos',
   'Gerencia de Compras',
-  'Gerencia de Operaciones',
-  'Subgerencia de Relaciones Institucionales',
-  'Subgerencia de Seguridad Patrimonial',
-  'Taller Mecánico (Gerencia de Mantenimiento)',
-  'Gerencia Comercial',
-  'Centro de Control y Monitoreo',
-  'Asistencia Vial',
-  'Gerencia de Sistemas',
-  'Gerencia de Asuntos Legales',
-  'Gerencia General',
-  'Sistema de Gestión Integrado'
+  'SGI',
+  'Gerencia de Legales',
 ]
 const ROL_LABELS = {
   admin: 'Administrador',
@@ -27,6 +23,41 @@ const ROL_LABELS = {
 
 const FORM_VACIO = {
   nombre: '', email: '', password: '', rol: 'evaluador_compras', area: 'Compras', etIdsPermitidos: [], sectores: []
+}
+
+function SectorPersonalizado({ form, setForm }) {
+  const [abierto, setAbierto] = useState(false)
+  const [texto, setTexto]     = useState('')
+  const inputRef = useRef(null)
+
+  const agregar = () => {
+    const nombre = texto.trim()
+    if (!nombre || form.sectores.includes(nombre)) { setTexto(''); setAbierto(false); return }
+    setForm(f => ({ ...f, sectores: [...f.sectores, nombre] }))
+    setTexto('')
+    setAbierto(false)
+  }
+
+  useEffect(() => { if (abierto) inputRef.current?.focus() }, [abierto])
+
+  if (!abierto) return (
+    <button type="button" onClick={() => setAbierto(true)}
+      className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-teal-600 border border-dashed border-gray-300 hover:border-teal-400 rounded-lg px-3 py-1.5 transition-colors">
+      <span>＋</span> Agregar sector personalizado
+    </button>
+  )
+  return (
+    <div className="flex items-center gap-2 border border-teal-300 rounded-lg px-3 py-1.5 bg-teal-50">
+      <input ref={inputRef} value={texto} onChange={e => setTexto(e.target.value)}
+        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); agregar() } if (e.key === 'Escape') { setAbierto(false); setTexto('') } }}
+        placeholder="Nombre del sector…"
+        className="flex-1 bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none" />
+      <button type="button" onClick={agregar}
+        className="px-2 py-0.5 text-xs bg-teal-600 text-white rounded hover:bg-teal-700">Agregar</button>
+      <button type="button" onClick={() => { setAbierto(false); setTexto('') }}
+        className="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
+    </div>
+  )
 }
 
 export default function Usuarios() {
@@ -93,7 +124,7 @@ export default function Usuarios() {
         : [...f.sectores, s]
     }))
   }
-  const seleccionarTodosSectores = () => setForm(f => ({ ...f, sectores: [...SECTORES] }))
+  const seleccionarTodosSectores = () => setForm(f => ({ ...f, sectores: [...SECTORES_BASE] }))
   const deseleccionarTodosSectores = () => setForm(f => ({ ...f, sectores: [] }))
 
   const seleccionarTodas = () => setForm(f => ({ ...f, etIdsPermitidos: ets.map(e => e._id) }))
@@ -370,20 +401,28 @@ export default function Usuarios() {
                   <p className="text-xs text-gray-500">El usuario solo verá y podrá editar los sectores seleccionados.</p>
 
                   <div className="border border-gray-200 rounded-lg divide-y divide-gray-100 max-h-48 overflow-y-auto">
-                    {SECTORES.map(s => (
+                    {/* Sectores fijos */}
+                    {SECTORES_BASE.map(s => (
                       <label key={s} className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={form.sectores.includes(s)}
-                          onChange={() => toggleSector(s)}
-                          className="rounded accent-blue-600"
-                        />
+                        <input type="checkbox" checked={form.sectores.includes(s)} onChange={() => toggleSector(s)} className="rounded accent-blue-600" />
                         <span className="text-sm text-gray-800">{s}</span>
                       </label>
                     ))}
+                    {/* Sectores personalizados ya asignados (no están en la lista base) */}
+                    {form.sectores.filter(s => !SECTORES_BASE.includes(s)).map(s => (
+                      <label key={s} className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer bg-teal-50">
+                        <input type="checkbox" checked onChange={() => toggleSector(s)} className="rounded accent-teal-600" />
+                        <span className="text-sm text-teal-800">{s}</span>
+                        <span className="text-xs text-teal-500 ml-auto">personalizado</span>
+                      </label>
+                    ))}
                   </div>
+
+                  {/* Agregar sector personalizado */}
+                  <SectorPersonalizado form={form} setForm={setForm} />
+
                   <p className="text-xs text-gray-500">
-                    {form.sectores.length} de {SECTORES.length} sectores seleccionados
+                    {form.sectores.length} sector{form.sectores.length !== 1 ? 'es' : ''} seleccionado{form.sectores.length !== 1 ? 's' : ''}
                   </p>
                 </div>
               )}

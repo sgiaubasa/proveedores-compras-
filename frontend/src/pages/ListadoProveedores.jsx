@@ -3,20 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 
-const SECTORES = [
+const SECTORES_BASE = [
+  'Gerencia de Operaciones',
+  'Gerencia Comercial',
+  'Gerencia de Prevención y Seguridad Integral',
+  'Gerencia de Sistemas',
+  'Gerencia de Mantenimiento',
   'Gerencia de Recursos Humanos',
   'Gerencia de Compras',
-  'Gerencia de Operaciones',
-  'Subgerencia de Relaciones Institucionales',
-  'Subgerencia de Seguridad Patrimonial',
-  'Taller Mecánico (Gerencia de Mantenimiento)',
-  'Gerencia Comercial',
-  'Centro de Control y Monitoreo',
-  'Asistencia Vial',
-  'Gerencia de Sistemas',
-  'Gerencia de Asuntos Legales',
-  'Gerencia General',
-  'Sistema de Gestión Integrado'
+  'SGI',
+  'Gerencia de Legales',
 ]
 
 const ESTADO_LABELS = { A: 'Aprobado', D: 'Dudoso', E: 'Eliminado' }
@@ -27,19 +23,34 @@ const ESTADO_COLORS = {
 }
 
 export default function ListadoProveedores() {
-  const [datos, setDatos]         = useState([])   // docs guardados en mongo
+  const [datos, setDatos]         = useState([])
   const [expandido, setExpandido] = useState(null)
+  const [nuevoSector, setNuevoSector] = useState('')
+  const [mostrarInput, setMostrarInput] = useState(false)
   const navigate = useNavigate()
-  const { usuario, tieneSector } = useAuth()
-
-  // Sectores visibles: admin ve todos, el resto solo los asignados
-  const sectoresVisibles = usuario?.rol === 'admin'
-    ? SECTORES
-    : SECTORES.filter(s => (usuario?.sectores || []).includes(s))
+  const { usuario } = useAuth()
 
   useEffect(() => {
     api.get('/listado-proveedores').then(r => setDatos(r.data))
   }, [])
+
+  // Sectores extras en DB que no están en la lista base (ej: sectores personalizados)
+  const sectoresExtra = datos
+    .map(d => d.sector)
+    .filter(s => !SECTORES_BASE.includes(s))
+
+  const todosSectores = [...SECTORES_BASE, ...sectoresExtra]
+
+  // Filtrar por permisos del usuario
+  const sectoresVisibles = usuario?.rol === 'admin'
+    ? todosSectores
+    : todosSectores.filter(s => (usuario?.sectores || []).includes(s))
+
+  const agregarSector = () => {
+    const nombre = nuevoSector.trim()
+    if (!nombre) return
+    navigate(`/listado-proveedores/${encodeURIComponent(nombre)}`)
+  }
 
   const getDato = sector => datos.find(d => d.sector === sector) || null
 
@@ -205,6 +216,36 @@ export default function ListadoProveedores() {
           )
         })}
       </div>
+
+      {/* Agregar sector personalizado (admin) */}
+      {usuario?.rol === 'admin' && (
+        <div className="mt-5">
+          {!mostrarInput ? (
+            <button
+              onClick={() => setMostrarInput(true)}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-blue-600 border border-dashed border-gray-300 hover:border-blue-400 rounded-xl px-5 py-3 w-full transition-colors">
+              <span className="text-lg leading-none">＋</span> Agregar sector personalizado
+            </button>
+          ) : (
+            <div className="flex items-center gap-3 border border-blue-300 rounded-xl px-5 py-3 bg-blue-50">
+              <input
+                autoFocus
+                value={nuevoSector}
+                onChange={e => setNuevoSector(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); agregarSector() } if (e.key === 'Escape') { setMostrarInput(false); setNuevoSector('') } }}
+                placeholder="Nombre del sector (ej: Gerencia de Auditoría)"
+                className="flex-1 bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none"
+              />
+              <button onClick={agregarSector}
+                className="px-3 py-1 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Ir al sector
+              </button>
+              <button onClick={() => { setMostrarInput(false); setNuevoSector('') }}
+                className="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
