@@ -27,7 +27,8 @@ router.post('/login', async (req, res) => {
       email:            user.email,
       rol:              user.rol,
       area:             user.area,
-      etIdsPermitidos:  user.etIdsPermitidos   // array de {_id, codigo, nombre}
+      etIdsPermitidos:  user.etIdsPermitidos,  // array de {_id, codigo, nombre}
+      sectores:         user.sectores || []
     }
   })
 })

@@ -44,7 +44,7 @@ function AppRoutes() {
       } />
 
       <Route path="/evaluacion-insumo" element={
-        <ProtectedRoute roles={['admin','evaluador_compras']}>
+        <ProtectedRoute>
           <Layout><NuevoInsumo /></Layout>
         </ProtectedRoute>
       } />

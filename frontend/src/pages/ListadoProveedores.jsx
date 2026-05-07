@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
+import { useAuth } from '../context/AuthContext'
 
 const SECTORES = [
   'Gerencia de Recursos Humanos',
@@ -29,6 +30,12 @@ export default function ListadoProveedores() {
   const [datos, setDatos]         = useState([])   // docs guardados en mongo
   const [expandido, setExpandido] = useState(null)
   const navigate = useNavigate()
+  const { usuario, tieneSector } = useAuth()
+
+  // Sectores visibles: admin ve todos, el resto solo los asignados
+  const sectoresVisibles = usuario?.rol === 'admin'
+    ? SECTORES
+    : SECTORES.filter(s => (usuario?.sectores || []).includes(s))
 
   useEffect(() => {
     api.get('/listado-proveedores').then(r => setDatos(r.data))
@@ -58,8 +65,14 @@ export default function ListadoProveedores() {
         ))}
       </div>
 
+      {sectoresVisibles.length === 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center text-sm text-amber-700">
+          No tenés sectores asignados. Contactá al administrador para que te asigne acceso.
+        </div>
+      )}
+
       <div className="space-y-3">
-        {SECTORES.map(sector => {
+        {sectoresVisibles.map(sector => {
           const dato    = getDato(sector)
           const abierto = expandido === sector
 

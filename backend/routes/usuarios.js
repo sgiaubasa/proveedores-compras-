@@ -15,9 +15,9 @@ router.get('/', auth, roles('admin'), async (req, res) => {
 // Crear usuario (admin asigna email, password y ETs permitidas)
 router.post('/', auth, roles('admin'), async (req, res) => {
   try {
-    const { nombre, email, password, rol, area, etIdsPermitidos } = req.body
+    const { nombre, email, password, rol, area, etIdsPermitidos, sectores } = req.body
     if (!nombre || !email || !password) return res.status(400).json({ error: 'Nombre, email y contraseña son obligatorios' })
-    const u = await Usuario.create({ nombre, email, password, rol, area, etIdsPermitidos: etIdsPermitidos || [] })
+    const u = await Usuario.create({ nombre, email, password, rol, area, etIdsPermitidos: etIdsPermitidos || [], sectores: sectores || [] })
     const populated = await Usuario.findById(u._id).select('-password').populate('etIdsPermitidos', '_id codigo nombre')
     res.status(201).json(populated)
   } catch (e) {

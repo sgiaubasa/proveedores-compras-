@@ -3,6 +3,21 @@ import api from '../api'
 
 const ROLES  = ['admin','evaluador_tecnico','evaluador_compras','lectura']
 const AREAS  = ['GO','GC','CAE','Compras','SAV','JAV','CCM','SGI','Otro']
+const SECTORES = [
+  'Gerencia de Recursos Humanos',
+  'Gerencia de Compras',
+  'Gerencia de Operaciones',
+  'Subgerencia de Relaciones Institucionales',
+  'Subgerencia de Seguridad Patrimonial',
+  'Taller Mecánico (Gerencia de Mantenimiento)',
+  'Gerencia Comercial',
+  'Centro de Control y Monitoreo',
+  'Asistencia Vial',
+  'Gerencia de Sistemas',
+  'Gerencia de Asuntos Legales',
+  'Gerencia General',
+  'Sistema de Gestión Integrado'
+]
 const ROL_LABELS = {
   admin: 'Administrador',
   evaluador_tecnico: 'Evaluador Técnico',
@@ -11,7 +26,7 @@ const ROL_LABELS = {
 }
 
 const FORM_VACIO = {
-  nombre: '', email: '', password: '', rol: 'evaluador_compras', area: 'Compras', etIdsPermitidos: []
+  nombre: '', email: '', password: '', rol: 'evaluador_compras', area: 'Compras', etIdsPermitidos: [], sectores: []
 }
 
 export default function Usuarios() {
@@ -52,7 +67,8 @@ export default function Usuarios() {
       password:         '',
       rol:              u.rol,
       area:             u.area || '',
-      etIdsPermitidos:  u.etIdsPermitidos?.map(e => e._id || e) || []
+      etIdsPermitidos:  u.etIdsPermitidos?.map(e => e._id || e) || [],
+      sectores:         u.sectores || []
     })
     setCambiarPass(false)
     setNuevaPass('')
@@ -68,6 +84,17 @@ export default function Usuarios() {
         : [...f.etIdsPermitidos, etId]
     }))
   }
+
+  const toggleSector = s => {
+    setForm(f => ({
+      ...f,
+      sectores: f.sectores.includes(s)
+        ? f.sectores.filter(x => x !== s)
+        : [...f.sectores, s]
+    }))
+  }
+  const seleccionarTodosSectores = () => setForm(f => ({ ...f, sectores: [...SECTORES] }))
+  const deseleccionarTodosSectores = () => setForm(f => ({ ...f, sectores: [] }))
 
   const seleccionarTodas = () => setForm(f => ({ ...f, etIdsPermitidos: ets.map(e => e._id) }))
   const deseleccionarTodas = () => setForm(f => ({ ...f, etIdsPermitidos: [] }))
@@ -98,7 +125,8 @@ export default function Usuarios() {
         nombre:          form.nombre,
         rol:             form.rol,
         area:            form.area,
-        etIdsPermitidos: form.etIdsPermitidos
+        etIdsPermitidos: form.etIdsPermitidos,
+        sectores:        form.sectores
       }
       if (cambiarPass) {
         if (!nuevaPass) return setError('Ingresá la nueva contraseña')
@@ -143,6 +171,7 @@ export default function Usuarios() {
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Rol</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Área</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">ETs asignadas</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-600">Sectores</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Estado</th>
                 <th className="px-4 py-3"></th>
               </tr>
@@ -176,6 +205,15 @@ export default function Usuarios() {
                       </div>
                     ) : (
                       <span className="text-xs text-amber-600">Sin ETs asignadas</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {u.rol === 'admin' ? (
+                      <span className="text-xs text-gray-400 italic">Todos</span>
+                    ) : u.sectores?.length > 0 ? (
+                      <span className="text-xs text-teal-700">{u.sectores.length} sector{u.sectores.length !== 1 ? 'es' : ''}</span>
+                    ) : (
+                      <span className="text-xs text-amber-600">Sin sectores</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -313,8 +351,41 @@ export default function Usuarios() {
 
               {form.rol === 'admin' && (
                 <p className="text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-                  Los administradores tienen acceso a todas las ETs automáticamente.
+                  Los administradores tienen acceso a todas las ETs y sectores automáticamente.
                 </p>
+              )}
+
+              {/* Sectores del Listado de Proveedores Críticos */}
+              {form.rol !== 'admin' && (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      Sectores — Listado de Proveedores Críticos
+                    </h3>
+                    <div className="flex gap-3">
+                      <button type="button" onClick={seleccionarTodosSectores} className="text-xs text-blue-600 hover:underline">Todos</button>
+                      <button type="button" onClick={deseleccionarTodosSectores} className="text-xs text-gray-500 hover:underline">Ninguno</button>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500">El usuario solo verá y podrá editar los sectores seleccionados.</p>
+
+                  <div className="border border-gray-200 rounded-lg divide-y divide-gray-100 max-h-48 overflow-y-auto">
+                    {SECTORES.map(s => (
+                      <label key={s} className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.sectores.includes(s)}
+                          onChange={() => toggleSector(s)}
+                          className="rounded accent-blue-600"
+                        />
+                        <span className="text-sm text-gray-800">{s}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {form.sectores.length} de {SECTORES.length} sectores seleccionados
+                  </p>
+                </div>
               )}
 
               <div className="flex justify-end gap-3 pt-2">

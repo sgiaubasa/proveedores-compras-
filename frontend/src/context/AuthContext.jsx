@@ -46,8 +46,15 @@ export function AuthProvider({ children }) {
     return permitidos.some(e => (e._id || e) === etId)
   }
 
+  // Devuelve true si el usuario tiene acceso al sector dado
+  const tieneSector = sector => {
+    if (!usuario) return false
+    if (usuario.rol === 'admin') return true
+    return (usuario.sectores || []).includes(sector)
+  }
+
   return (
-    <AuthContext.Provider value={{ usuario, loading, error, login, logout, tieneRol, puedeEvaluar }}>
+    <AuthContext.Provider value={{ usuario, loading, error, login, logout, tieneRol, puedeEvaluar, tieneSector }}>
       {children}
     </AuthContext.Provider>
   )

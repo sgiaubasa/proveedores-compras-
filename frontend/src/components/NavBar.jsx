@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 const links = [
   { to: '/',                  label: 'Panel',             icon: '◉' },
   { to: '/evaluacion',        label: 'Eval. Servicio',    icon: '📋', roles: ['admin','evaluador_tecnico','evaluador_compras'] },
-  { to: '/evaluacion-insumo', label: 'Eval. Insumo',      icon: '📦', roles: ['admin','evaluador_compras'] },
+  { to: '/evaluacion-insumo', label: 'Eval. Insumo',      icon: '📦' },
   { to: '/historial',         label: 'Historial Servicios', icon: '☰' },
   { to: '/historial-insumos', label: 'Historial Insumos', icon: '☰' },
   { to: '/especificaciones',      label: 'Espec. Técnicas',       icon: '📄' },

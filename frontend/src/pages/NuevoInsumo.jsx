@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
+import { useAuth } from '../context/AuthContext'
 import { TRIMESTRES, TRIM_LABELS, estadoNota } from '../utils/scoring'
 import ScoreBar from '../components/ScoreBar'
 import AreasSelector from '../components/AreasSelector'
@@ -16,8 +17,31 @@ const CRITERIOS = [
 
 export default function NuevoInsumo() {
   const navigate  = useNavigate()
+  const { usuario } = useAuth()
   const [saving, setSaving]   = useState(false)
   const [error, setError]     = useState(null)
+
+  // Proveedores e insumos del listado según sector del usuario
+  const [listadoInsumos, setListadoInsumos] = useState([])   // [{proveedor, insumo}]
+  const [modoLibre, setModoLibre]           = useState(false) // fallback texto libre
+
+  useEffect(() => {
+    const sectores = usuario?.rol === 'admin' ? null : (usuario?.sectores || [])
+    if (sectores !== null && sectores.length === 0) {
+      setModoLibre(true)
+      return
+    }
+    api.get('/listado-proveedores').then(r => {
+      const docs = r.data
+      const filtrados = sectores === null ? docs : docs.filter(d => sectores.includes(d.sector))
+      const items = filtrados.flatMap(d => (d.insumos || []).map(i => ({ proveedor: i.proveedor, insumo: i.insumo, sector: d.sector })))
+      if (items.length === 0) {
+        setModoLibre(true)
+      } else {
+        setListadoInsumos(items)
+      }
+    }).catch(() => setModoLibre(true))
+  }, [usuario])
 
   const [proveedor, setProveedor] = useState('')
   const [insumo, setInsumo]       = useState('')
@@ -65,18 +89,73 @@ export default function NuevoInsumo() {
 
         <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
           <h2 className="font-semibold text-gray-700 text-sm uppercase tracking-wide">Datos del insumo</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Proveedor *</label>
-              <input value={proveedor} onChange={e => setProveedor(e.target.value)} required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          {/* Selección desde listado o modo libre */}
+          {!modoLibre && listadoInsumos.length > 0 ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-teal-700 bg-teal-50 border border-teal-200 rounded-lg px-3 py-1.5">
+                  📋 Seleccioná desde el listado de proveedores críticos de tu sector
+                </p>
+                <button type="button" onClick={() => setModoLibre(true)}
+                  className="text-xs text-gray-400 hover:text-gray-600 underline ml-3 shrink-0">
+                  Ingresar manualmente
+                </button>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Proveedor e insumo *</label>
+                <select
+                  value={proveedor && insumo ? `${proveedor}||${insumo}` : ''}
+                  onChange={e => {
+                    const [p, i] = e.target.value.split('||')
+                    setProveedor(p || '')
+                    setInsumo(i || '')
+                  }}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                  <option value="">— Seleccioná proveedor / insumo —</option>
+                  {listadoInsumos.map((it, idx) => (
+                    <option key={idx} value={`${it.proveedor}||${it.insumo}`}>
+                      {it.proveedor} — {it.insumo}
+                    </option>
+                  ))}
+                </select>
+                {proveedor && (
+                  <p className="mt-1 text-xs text-gray-500">
+                    Proveedor: <strong>{proveedor}</strong> · Insumo: <strong>{insumo}</strong>
+                  </p>
+                )}
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Descripción del insumo *</label>
-              <input value={insumo} onChange={e => setInsumo(e.target.value)} required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          ) : (
+            <div className="space-y-3">
+              {modoLibre && listadoInsumos.length === 0 && usuario?.rol !== 'admin' && (
+                <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5">
+                  Tu sector aún no tiene proveedores cargados en el listado. Ingresalos manualmente.
+                </p>
+              )}
+              {modoLibre && listadoInsumos.length > 0 && (
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-gray-500">Ingresando manualmente</p>
+                  <button type="button" onClick={() => setModoLibre(false)}
+                    className="text-xs text-blue-600 hover:underline">
+                    ← Volver al listado
+                  </button>
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Proveedor *</label>
+                  <input value={proveedor} onChange={e => setProveedor(e.target.value)} required
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Descripción del insumo *</label>
+                  <input value={insumo} onChange={e => setInsumo(e.target.value)} required
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>

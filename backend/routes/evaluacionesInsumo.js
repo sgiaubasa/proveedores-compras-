@@ -3,18 +3,16 @@ const auth    = require('../middleware/authMiddleware')
 const roles   = require('../middleware/rolesMiddleware')
 const EvalIns = require('../models/EvaluacionInsumo')
 
-// Crear evaluación de insumo
-router.post('/', auth, roles('admin','evaluador_compras'),
-  async (req, res) => {
-    try {
-      const ev = new EvalIns({ ...req.body, userId: req.usuario._id })
-      await ev.save()
-      res.status(201).json(ev)
-    } catch (e) {
-      res.status(400).json({ error: e.message })
-    }
+// Crear evaluación de insumo — cualquier usuario autenticado
+router.post('/', auth, async (req, res) => {
+  try {
+    const ev = new EvalIns({ ...req.body, userId: req.usuario._id })
+    await ev.save()
+    res.status(201).json(ev)
+  } catch (e) {
+    res.status(400).json({ error: e.message })
   }
-)
+})
 
 // Listar con filtros
 router.get('/', auth, async (req, res) => {
