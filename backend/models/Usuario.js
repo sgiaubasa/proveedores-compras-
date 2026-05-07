@@ -10,10 +10,7 @@ const usuarioSchema = new mongoose.Schema({
     enum: ['admin', 'evaluador_tecnico', 'evaluador_compras', 'lectura'],
     default: 'lectura'
   },
-  area: {
-    type: String,
-    enum: ['GO', 'GC', 'CAE', 'Compras', 'SAV', 'JAV', 'CCM', 'SGI', 'Otro']
-  },
+  area: { type: String },
   // ETs que este usuario puede evaluar. Vacío = todas (solo para admin)
   etIdsPermitidos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'EspecTecnica' }],
   // Sectores del listado de proveedores críticos que puede editar

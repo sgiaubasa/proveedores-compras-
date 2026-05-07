@@ -2,7 +2,17 @@ import { useEffect, useState, useRef } from 'react'
 import api from '../api'
 
 const ROLES  = ['admin','evaluador_tecnico','evaluador_compras','lectura']
-const AREAS  = ['GO','GC','CAE','Compras','SAV','JAV','CCM','SGI','Otro']
+const AREAS  = [
+  'Gerencia de Operaciones',
+  'Gerencia Comercial',
+  'Gerencia de Prevención y Seguridad Integral',
+  'Gerencia de Sistemas',
+  'Gerencia de Mantenimiento',
+  'Gerencia de Recursos Humanos',
+  'Gerencia de Compras',
+  'SGI',
+  'Gerencia de Legales',
+]
 const SECTORES_BASE = [
   'Gerencia de Operaciones',
   'Gerencia Comercial',

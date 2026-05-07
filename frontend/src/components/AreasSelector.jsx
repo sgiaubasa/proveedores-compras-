@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react'
 
-const AREAS_FIJAS = ['Compras','Área Técnica','GO','GC','CAE','SAV','JAV','CCM','SGI']
+const AREAS_FIJAS = [
+  'Gerencia de Operaciones',
+  'Gerencia Comercial',
+  'Gerencia de Prevención y Seguridad Integral',
+  'Gerencia de Sistemas',
+  'Gerencia de Mantenimiento',
+  'Gerencia de Recursos Humanos',
+  'Gerencia de Compras',
+  'SGI',
+  'Gerencia de Legales',
+]
 
 export default function AreasSelector({ value = [], onChange }) {
   // Detectar si hay un valor "Otro: texto" ya guardado
