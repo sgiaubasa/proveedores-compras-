@@ -19,8 +19,8 @@ router.get('/:sector', auth, async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }) }
 })
 
-// PUT (crear o actualizar) — admin o evaluador_compras
-router.put('/:sector', auth, roles('admin', 'evaluador_compras'), async (req, res) => {
+// PUT (crear o actualizar) — cualquier usuario autenticado
+router.put('/:sector', auth, async (req, res) => {
   try {
     const { responsable, servicios, insumos } = req.body
     const doc = await Listado.findOneAndUpdate(

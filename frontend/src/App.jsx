@@ -84,7 +84,7 @@ function AppRoutes() {
         <ProtectedRoute><Layout><ListadoProveedores /></Layout></ProtectedRoute>
       } />
       <Route path="/listado-proveedores/:sector" element={
-        <ProtectedRoute roles={['admin','evaluador_compras']}>
+        <ProtectedRoute>
           <Layout><ListadoProveedoresEditar /></Layout>
         </ProtectedRoute>
       } />

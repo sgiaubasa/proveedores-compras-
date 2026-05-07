@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
-import { useAuth } from '../context/AuthContext'
 
 const SECTORES = [
   'Gerencia de Recursos Humanos',
@@ -29,8 +28,7 @@ const ESTADO_COLORS = {
 export default function ListadoProveedores() {
   const [datos, setDatos]         = useState([])   // docs guardados en mongo
   const [expandido, setExpandido] = useState(null)
-  const { tieneRol }              = useAuth()
-  const navigate                  = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     api.get('/listado-proveedores').then(r => setDatos(r.data))
@@ -94,13 +92,11 @@ export default function ListadoProveedores() {
                       {dato.updatedBy?.nombre ? ` · ${dato.updatedBy.nombre}` : ''}
                     </span>
                   )}
-                  {tieneRol('admin', 'evaluador_compras') && (
-                    <button
-                      onClick={e => { e.stopPropagation(); navigate(`/listado-proveedores/${encodeURIComponent(sector)}`) }}
-                      className="px-2.5 py-1 text-xs border border-blue-300 rounded-lg hover:bg-blue-50 text-blue-600">
-                      {dato ? 'Editar' : 'Completar'}
-                    </button>
-                  )}
+                  <button
+                    onClick={e => { e.stopPropagation(); navigate(`/listado-proveedores/${encodeURIComponent(sector)}`) }}
+                    className="px-2.5 py-1 text-xs border border-blue-300 rounded-lg hover:bg-blue-50 text-blue-600">
+                    {dato ? 'Editar' : 'Completar'}
+                  </button>
                   <span className="text-gray-400">{abierto ? '▲' : '▼'}</span>
                 </div>
               </button>
@@ -111,10 +107,8 @@ export default function ListadoProveedores() {
                   {!dato ? (
                     <div className="pt-4 text-sm text-gray-400 italic text-center py-6">
                       Este sector aún no tiene proveedores cargados.
-                      {tieneRol('admin', 'evaluador_compras') && (
-                        <span> <button onClick={() => navigate(`/listado-proveedores/${encodeURIComponent(sector)}`)}
-                          className="text-blue-600 hover:underline">Completar ahora</button>.</span>
-                      )}
+                      <span> <button onClick={() => navigate(`/listado-proveedores/${encodeURIComponent(sector)}`)}
+                        className="text-blue-600 hover:underline">Completar ahora</button>.</span>
                     </div>
                   ) : (
                     <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
