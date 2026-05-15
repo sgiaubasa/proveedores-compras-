@@ -35,15 +35,24 @@ router.get('/:id', auth, async (req, res) => {
   res.json(ev)
 })
 
-// Editar evaluación de insumo (solo admin)
-router.put('/:id', auth, roles('admin'), async (req, res) => {
+// Editar evaluación de insumo — admin o usuario con sector coincidente
+router.put('/:id', auth, async (req, res) => {
   try {
     const ev = await EvalIns.findById(req.params.id)
     if (!ev) return res.status(404).json({ error: 'No encontrada' })
+
+    // Control de acceso por sector
+    if (req.usuario.rol !== 'admin') {
+      const evAreas  = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
+      const userSect = req.usuario.sectores || []
+      if (!evAreas.some(a => userSect.includes(a)))
+        return res.status(403).json({ error: 'Sin permiso para editar esta evaluación' })
+    }
+
     const campos = ['proveedorNombre','descripcionInsumo','trimestre','anio','areas','obs',
                     'cotizacion','calidad_cantidad','plazo_entrega','seriedad','tiempo_respuesta']
     campos.forEach(c => { if (req.body[c] !== undefined) ev[c] = req.body[c] })
-    await ev.save()   // recalcula nota_final via pre-save
+    await ev.save()
     res.json(ev)
   } catch (e) {
     res.status(400).json({ error: e.message })

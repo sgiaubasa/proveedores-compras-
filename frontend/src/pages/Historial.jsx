@@ -7,13 +7,28 @@ import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
 
 export default function Historial() {
-  const { tieneRol } = useAuth()
+  const { tieneRol, usuario } = useAuth()
   const [evaluaciones, setEvaluaciones] = useState([])
   const [ets, setEts]   = useState([])
   const [loading, setLoading] = useState(true)
   const [detalle, setDetalle] = useState(null)
   const [resumen, setResumen] = useState(null)
   const [editando, setEditando] = useState(null)   // evaluación en edición
+
+  // Devuelve true si el usuario puede editar esta evaluación
+  const puedeEditar = ev => {
+    if (tieneRol('admin')) return true
+    const evAreas  = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
+    return (usuario?.sectores || []).some(s => evAreas.includes(s))
+  }
+
+  // Evaluaciones visibles según sector (admin ve todo)
+  const evaluacionesVisibles = tieneRol('admin')
+    ? evaluaciones
+    : evaluaciones.filter(ev => {
+        const evAreas = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
+        return (usuario?.sectores || []).some(s => evAreas.includes(s))
+      })
 
   const [filtroEt, setFiltroEt]     = useState('')
   const [filtroTrim, setFiltroTrim] = useState('')
@@ -77,8 +92,12 @@ export default function Historial() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-500">Cargando…</div>
-        ) : evaluaciones.length === 0 ? (
-          <div className="p-8 text-center text-gray-400 italic">No hay evaluaciones registradas</div>
+        ) : evaluacionesVisibles.length === 0 ? (
+          <div className="p-8 text-center text-gray-400 italic">
+            {evaluaciones.length === 0
+              ? 'No hay evaluaciones registradas'
+              : 'No hay evaluaciones para tu sector asignado'}
+          </div>
         ) : (
           <table className="w-full text-sm border-collapse">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -92,7 +111,7 @@ export default function Historial() {
               </tr>
             </thead>
             <tbody>
-              {evaluaciones.map(ev => (
+              {evaluacionesVisibles.map(ev => (
                 <tr key={ev._id} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="px-4 py-3">
                     <span className="font-mono text-blue-700 font-bold">{ev.etId?.codigo}</span>
@@ -111,7 +130,7 @@ export default function Historial() {
                     <div className="flex gap-2">
                       <button onClick={() => setDetalle(ev)} className="text-xs text-blue-600 hover:underline">Detalle</button>
                       <button onClick={() => verResumenAnual(ev.etId?._id, ev.anio)} className="text-xs text-teal-600 hover:underline">Anual</button>
-                      {tieneRol('admin') && (
+                      {puedeEditar(ev) && (
                         <button onClick={() => setEditando(ev)} className="text-xs text-orange-600 hover:underline font-semibold">Editar</button>
                       )}
                     </div>

@@ -15,11 +15,24 @@ const CRITERIOS = [
 ]
 
 export default function HistorialInsumos() {
-  const { tieneRol } = useAuth()
+  const { tieneRol, usuario } = useAuth()
   const [evaluaciones, setEvaluaciones] = useState([])
   const [loading, setLoading] = useState(true)
   const [detalle, setDetalle] = useState(null)
   const [editando, setEditando] = useState(null)
+
+  const puedeEditar = ev => {
+    if (tieneRol('admin')) return true
+    const evAreas  = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
+    return (usuario?.sectores || []).some(s => evAreas.includes(s))
+  }
+
+  const evaluacionesVisibles = tieneRol('admin')
+    ? evaluaciones
+    : evaluaciones.filter(ev => {
+        const evAreas = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
+        return (usuario?.sectores || []).some(s => evAreas.includes(s))
+      })
 
   const [filtroProveedor, setFiltroProveedor] = useState('')
   const [filtroTrim, setFiltroTrim]           = useState('')
@@ -69,8 +82,12 @@ export default function HistorialInsumos() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-500">Cargando…</div>
-        ) : evaluaciones.length === 0 ? (
-          <div className="p-8 text-center text-gray-400 italic">No hay evaluaciones de insumos</div>
+        ) : evaluacionesVisibles.length === 0 ? (
+          <div className="p-8 text-center text-gray-400 italic">
+            {evaluaciones.length === 0
+              ? 'No hay evaluaciones de insumos'
+              : 'No hay evaluaciones de insumos para tu sector asignado'}
+          </div>
         ) : (
           <table className="w-full text-sm border-collapse">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -85,7 +102,7 @@ export default function HistorialInsumos() {
               </tr>
             </thead>
             <tbody>
-              {evaluaciones.map(ev => (
+              {evaluacionesVisibles.map(ev => (
                 <tr key={ev._id} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium">{ev.proveedorNombre}</td>
                   <td className="px-4 py-3 text-gray-600 text-xs">{ev.descripcionInsumo}</td>
@@ -101,7 +118,7 @@ export default function HistorialInsumos() {
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <button onClick={() => setDetalle(ev)} className="text-xs text-blue-600 hover:underline">Detalle</button>
-                      {tieneRol('admin') && (
+                      {puedeEditar(ev) && (
                         <button onClick={() => setEditando(ev)} className="text-xs text-orange-600 hover:underline font-semibold">Editar</button>
                       )}
                     </div>
