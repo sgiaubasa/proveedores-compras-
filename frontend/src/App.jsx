@@ -12,6 +12,7 @@ import AltaProveedor from './pages/AltaProveedor'
 import Usuarios from './pages/Usuarios'
 import ListadoProveedores from './pages/ListadoProveedores'
 import ListadoProveedoresEditar from './pages/ListadoProveedoresEditar'
+import Dashboard from './pages/Dashboard'
 
 function ProtectedRoute({ children, roles }) {
   const { usuario } = useAuth()
@@ -36,6 +37,8 @@ function AppRoutes() {
       <Route path="/login" element={usuario ? <Navigate to="/" replace /> : <Login />} />
 
       <Route path="/" element={<ProtectedRoute><Layout><Panel /></Layout></ProtectedRoute>} />
+
+      <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
 
       <Route path="/evaluacion" element={
         <ProtectedRoute roles={['admin','evaluador_tecnico','evaluador_compras']}>
