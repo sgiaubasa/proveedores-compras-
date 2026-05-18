@@ -4,6 +4,7 @@ import api from '../api'
 const ROLES  = ['admin','evaluador_tecnico','evaluador_compras','lectura']
 const AREAS  = [
   'Gerencia de Operaciones',
+  'Gerencia de Operaciones (SVIA)',
   'Gerencia Comercial',
   'Gerencia de Prevención y Seguridad Integral',
   'Gerencia de Sistemas',
@@ -15,6 +16,7 @@ const AREAS  = [
 ]
 const SECTORES_BASE = [
   'Gerencia de Operaciones',
+  'Gerencia de Operaciones (SVIA)',
   'Gerencia Comercial',
   'Gerencia de Prevención y Seguridad Integral',
   'Gerencia de Sistemas',

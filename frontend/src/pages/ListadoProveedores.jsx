@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 
 const SECTORES_BASE = [
   'Gerencia de Operaciones',
+  'Gerencia de Operaciones (SVIA)',
   'Gerencia Comercial',
   'Gerencia de Prevención y Seguridad Integral',
   'Gerencia de Sistemas',

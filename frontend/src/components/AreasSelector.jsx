@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 const AREAS_FIJAS = [
   'Gerencia de Operaciones',
+  'Gerencia de Operaciones (SVIA)',
   'Gerencia Comercial',
   'Gerencia de Prevención y Seguridad Integral',
   'Gerencia de Sistemas',
