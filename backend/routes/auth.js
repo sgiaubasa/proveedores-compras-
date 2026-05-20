@@ -34,6 +34,18 @@ router.post('/login', async (req, res) => {
   })
 })
 
+// Actualizar perfil propio (nombre)
+router.put('/perfil', require('../middleware/authMiddleware'), async (req, res) => {
+  const { nombre } = req.body
+  if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre no puede estar vacío' })
+  const u = await Usuario.findByIdAndUpdate(
+    req.usuario._id,
+    { nombre: nombre.trim() },
+    { new: true }
+  ).select('-password')
+  res.json({ nombre: u.nombre })
+})
+
 // Cambiar contraseña (primer ingreso o voluntario)
 router.put('/cambiar-password', require('../middleware/authMiddleware'), async (req, res) => {
   const { nuevaPassword } = req.body

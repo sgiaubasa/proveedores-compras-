@@ -113,7 +113,10 @@ export default function HistorialInsumos() {
                   <td className="px-4 py-3 text-gray-600 text-xs">
                     {(ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []).join(' + ') || '—'}
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-xs">{ev.userId?.nombre}</td>
+                  <td className="px-4 py-3 text-xs">
+                    <div className="font-medium text-gray-800">{ev.userId?.nombre || '—'}</div>
+                    {ev.userId?.area && <div className="text-gray-400">{ev.userId.area}</div>}
+                  </td>
                   <td className="px-4 py-3"><BadgeNota nota={ev.nota_final} /></td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">

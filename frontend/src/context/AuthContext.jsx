@@ -53,6 +53,13 @@ export function AuthProvider({ children }) {
     return (usuario.sectores || []).includes(sector)
   }
 
+  // Actualizar nombre en localStorage y estado
+  const actualizarNombre = (nuevoNombre) => {
+    const actualizado = { ...usuario, nombre: nuevoNombre }
+    localStorage.setItem('usuario', JSON.stringify(actualizado))
+    setUsuario(actualizado)
+  }
+
   // Llamar después de cambiar contraseña para actualizar el flag local
   const marcarPasswordCambiada = () => {
     const actualizado = { ...usuario, debeCambiarPassword: false }
@@ -61,7 +68,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, loading, error, login, logout, tieneRol, puedeEvaluar, tieneSector, marcarPasswordCambiada }}>
+    <AuthContext.Provider value={{ usuario, loading, error, login, logout, tieneRol, puedeEvaluar, tieneSector, marcarPasswordCambiada, actualizarNombre }}>
       {children}
     </AuthContext.Provider>
   )
