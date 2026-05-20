@@ -34,7 +34,8 @@ router.patch('/:id', auth, roles('admin'), async (req, res) => {
     if (password) {
       const u = await Usuario.findById(req.params.id)
       if (!u) return res.status(404).json({ error: 'Usuario no encontrado' })
-      u.password = password
+      u.password             = password
+      u.debeCambiarPassword  = true   // fuerza cambio en próximo ingreso
       Object.assign(u, rest)
       await u.save()
       const populated = await Usuario.findById(u._id).select('-password').populate('etIdsPermitidos', '_id codigo nombre')

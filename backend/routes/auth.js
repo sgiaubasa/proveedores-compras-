@@ -22,15 +22,28 @@ router.post('/login', async (req, res) => {
   res.json({
     token,
     usuario: {
-      id:               user._id,
-      nombre:           user.nombre,
-      email:            user.email,
-      rol:              user.rol,
-      area:             user.area,
-      etIdsPermitidos:  user.etIdsPermitidos,  // array de {_id, codigo, nombre}
-      sectores:         user.sectores || []
+      id:                  user._id,
+      nombre:              user.nombre,
+      email:               user.email,
+      rol:                 user.rol,
+      area:                user.area,
+      etIdsPermitidos:     user.etIdsPermitidos,
+      sectores:            user.sectores || [],
+      debeCambiarPassword: user.debeCambiarPassword ?? false
     }
   })
+})
+
+// Cambiar contraseña (primer ingreso o voluntario)
+router.put('/cambiar-password', require('../middleware/authMiddleware'), async (req, res) => {
+  const { nuevaPassword } = req.body
+  if (!nuevaPassword || nuevaPassword.length < 6)
+    return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' })
+  const u = await Usuario.findById(req.usuario._id)
+  u.password            = nuevaPassword
+  u.debeCambiarPassword = false
+  await u.save()
+  res.json({ ok: true })
 })
 
 // Obtener perfil actual

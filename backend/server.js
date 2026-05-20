@@ -22,11 +22,12 @@ async function initAdmin() {
     const existe  = await Usuario.findOne({ email: 'admin@aubasa.com' })
     if (!existe) {
       await Usuario.create({
-        nombre:   'Administrador',
-        email:    'admin@aubasa.com',
-        password: 'admin123',
-        rol:      'admin',
-        activo:   true
+        nombre:              'Administrador',
+        email:               'admin@aubasa.com',
+        password:            'admin123',
+        rol:                 'admin',
+        activo:              true,
+        debeCambiarPassword: false   // admin inicial no necesita cambiar
       })
       console.log('✓ Usuario admin creado  →  admin@aubasa.com / admin123')
     }

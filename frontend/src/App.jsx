@@ -13,10 +13,13 @@ import Usuarios from './pages/Usuarios'
 import ListadoProveedores from './pages/ListadoProveedores'
 import ListadoProveedoresEditar from './pages/ListadoProveedoresEditar'
 import Dashboard from './pages/Dashboard'
+import CambiarPassword from './pages/CambiarPassword'
 
 function ProtectedRoute({ children, roles }) {
   const { usuario } = useAuth()
   if (!usuario) return <Navigate to="/login" replace />
+  // Primer ingreso: forzar cambio de contraseña antes de acceder a cualquier página
+  if (usuario.debeCambiarPassword) return <Navigate to="/cambiar-password" replace />
   if (roles && !roles.includes(usuario.rol)) return <Navigate to="/" replace />
   return children
 }
@@ -35,6 +38,9 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={usuario ? <Navigate to="/" replace /> : <Login />} />
+
+      {/* Cambio de contraseña: accesible con sesión activa, sin pasar por ProtectedRoute */}
+      <Route path="/cambiar-password" element={usuario ? <CambiarPassword /> : <Navigate to="/login" replace />} />
 
       <Route path="/" element={<ProtectedRoute><Layout><Panel /></Layout></ProtectedRoute>} />
 

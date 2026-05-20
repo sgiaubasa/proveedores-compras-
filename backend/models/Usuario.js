@@ -15,7 +15,8 @@ const usuarioSchema = new mongoose.Schema({
   etIdsPermitidos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'EspecTecnica' }],
   // Sectores del listado de proveedores críticos que puede editar
   sectores: [{ type: String }],
-  activo:       { type: Boolean, default: true },
+  activo:             { type: Boolean, default: true },
+  debeCambiarPassword:{ type: Boolean, default: true },
   ultimoAcceso: Date
 }, { timestamps: true })
 

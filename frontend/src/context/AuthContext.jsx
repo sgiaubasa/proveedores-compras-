@@ -53,8 +53,15 @@ export function AuthProvider({ children }) {
     return (usuario.sectores || []).includes(sector)
   }
 
+  // Llamar después de cambiar contraseña para actualizar el flag local
+  const marcarPasswordCambiada = () => {
+    const actualizado = { ...usuario, debeCambiarPassword: false }
+    localStorage.setItem('usuario', JSON.stringify(actualizado))
+    setUsuario(actualizado)
+  }
+
   return (
-    <AuthContext.Provider value={{ usuario, loading, error, login, logout, tieneRol, puedeEvaluar, tieneSector }}>
+    <AuthContext.Provider value={{ usuario, loading, error, login, logout, tieneRol, puedeEvaluar, tieneSector, marcarPasswordCambiada }}>
       {children}
     </AuthContext.Provider>
   )
