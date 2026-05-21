@@ -52,8 +52,11 @@ router.put('/:id', auth, async (req, res) => {
     const campos = ['proveedorNombre','descripcionInsumo','trimestre','anio','areas','obs',
                     'cotizacion','calidad_cantidad','plazo_entrega','seriedad','tiempo_respuesta']
     campos.forEach(c => { if (req.body[c] !== undefined) ev[c] = req.body[c] })
+    // Solo admin puede cambiar el evaluador
+    if (req.body.userId && req.usuario.rol === 'admin') ev.userId = req.body.userId
     await ev.save()
-    res.json(ev)
+    const populated = await ev.populate('userId', 'nombre area')
+    res.json(populated)
   } catch (e) {
     res.status(400).json({ error: e.message })
   }

@@ -62,14 +62,17 @@ router.put('/:id', auth, async (req, res) => {
         return res.status(403).json({ error: 'Sin permiso para editar esta evaluación' })
     }
 
-    const { trimestre, anio, areas, obs, items } = req.body
+    const { trimestre, anio, areas, obs, items, userId } = req.body
     if (trimestre) ev.trimestre = trimestre
     if (anio)      ev.anio      = anio
     if (areas)     ev.areas     = areas
     if (obs !== undefined) ev.obs = obs
     if (items)     ev.items     = items
+    // Solo admin puede cambiar el evaluador
+    if (userId && req.usuario.rol === 'admin') ev.userId = userId
     await ev.save()
-    res.json(ev)
+    const populated = await ev.populate('userId', 'nombre area')
+    res.json(populated)
   } catch (e) {
     res.status(400).json({ error: e.message })
   }

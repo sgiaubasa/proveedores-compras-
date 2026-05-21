@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { BadgeNota, BadgeTrimestre } from '../components/Badge'
@@ -10,6 +10,7 @@ export default function Historial() {
   const { tieneRol, usuario } = useAuth()
   const [evaluaciones, setEvaluaciones] = useState([])
   const [ets, setEts]   = useState([])
+  const [usuarios, setUsuarios] = useState([])
   const [loading, setLoading] = useState(true)
   const [detalle, setDetalle] = useState(null)
   const [resumen, setResumen] = useState(null)
@@ -45,6 +46,7 @@ export default function Historial() {
 
   useEffect(() => {
     api.get('/espec-tecnicas').then(r => setEts(r.data))
+    if (tieneRol('admin')) api.get('/usuarios').then(r => setUsuarios(r.data))
     cargar()
   }, [])
 
@@ -150,10 +152,12 @@ export default function Historial() {
         <ModalDetalle ev={detalle} onClose={() => setDetalle(null)} />
       )}
 
-      {/* Modal editar (solo admin) */}
+      {/* Modal editar */}
       {editando && (
         <ModalEditarServicio
           ev={editando}
+          usuarios={usuarios}
+          esAdmin={tieneRol('admin')}
           onClose={() => setEditando(null)}
           onGuardado={evActualizado => {
             setEvaluaciones(prev => prev.map(e => e._id === evActualizado._id ? evActualizado : e))
@@ -258,12 +262,13 @@ function ModalDetalle({ ev, onClose }) {
   )
 }
 
-// ── Modal editar servicio (solo admin) ────────────────────────
-function ModalEditarServicio({ ev, onClose, onGuardado }) {
+// ── Modal editar servicio ─────────────────────────────────────
+function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin = false }) {
   const [trimestre, setTrimestre] = useState(ev.trimestre)
   const [anio, setAnio]           = useState(ev.anio)
   const [areas, setAreas]         = useState(ev.areas?.length ? ev.areas : ev.area ? [ev.area] : [])
   const [obs, setObs]             = useState(ev.obs || '')
+  const [userId, setUserId]       = useState(ev.userId?._id || ev.userId || '')
   const [puntajes, setPuntajes]   = useState(Object.fromEntries(ev.items.map(it => [it.n, it.puntaje])))
   const [obsItems, setObsItems]   = useState(Object.fromEntries(ev.items.map(it => [it.n, it.obs || ''])))
   const [saving, setSaving]       = useState(false)
@@ -285,7 +290,9 @@ function ModalEditarServicio({ ev, onClose, onGuardado }) {
         ponderacion: it.ponderacion,
         obs: obsItems[it.n] || ''
       }))
-      const r = await api.put(`/evaluaciones/${ev._id}`, { trimestre, anio, areas, obs, items })
+      const payload = { trimestre, anio, areas, obs, items }
+      if (esAdmin && userId) payload.userId = userId
+      const r = await api.put(`/evaluaciones/${ev._id}`, payload)
       onGuardado({ ...ev, ...r.data })
     } catch (e) {
       setError(e.response?.data?.error || 'Error al guardar')
@@ -307,6 +314,22 @@ function ModalEditarServicio({ ev, onClose, onGuardado }) {
 
         <div className="p-5 space-y-5">
           {error && <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>}
+
+          {/* Evaluador — solo admin */}
+          {esAdmin && usuarios.length > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Evaluador</label>
+              <select value={userId} onChange={e => setUserId(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option value="">— Sin cambiar —</option>
+                {usuarios.filter(u => u.activo).map(u => (
+                  <option key={u._id} value={u._id}>
+                    {u.nombre}{u.area ? ` — ${u.area}` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Trimestre + Año */}
           <div className="grid grid-cols-2 gap-4">
