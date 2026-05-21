@@ -71,8 +71,9 @@ router.put('/:id', auth, async (req, res) => {
     // Solo admin puede cambiar el evaluador
     if (userId && req.usuario.rol === 'admin') ev.userId = userId
     await ev.save()
-    const populated = await ev.populate('userId', 'nombre area')
-    res.json(populated)
+    await ev.populate('userId', 'nombre area')
+    await ev.populate('etId', 'codigo nombre proveedorNombre')
+    res.json(ev)
   } catch (e) {
     res.status(400).json({ error: e.message })
   }
