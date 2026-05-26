@@ -43,6 +43,9 @@ SUGERENCIAS_NUE_PATH = Path("sugerencias_nuevos.json")
 INCONGRUENCIAS_PATH  = Path("incongruencias.json")
 AGENDA_PATH          = Path("agenda_sgi.json")
 HALLAZGOS_PATH       = Path("hallazgos_auditoria.json")
+INDICADORES_PATH     = Path("indicadores_sgi.json")
+RIESGOS_PATH         = Path("riesgos_sectores.json")
+CHECKLIST_PATH       = Path("checklist_cargas.json")
 CHROMA_PATH          = "./chroma_db"
 CHROMA_COLLECTION    = "sgi_documentos"
 
@@ -578,6 +581,85 @@ ISO_39001_DICT = {
     "10.2":"Mejora continua",
 }
 
+# ─── DOCUMENTOS REQUERIDOS POR ISO ───────────────────────────────────────────
+DOCS_REQUERIDOS_SGI = [
+    {"id":"R001","nombre":"Análisis de Contexto (FODA/PESTEL)",
+     "clausula_9001":"4.1","clausula_39001":"4.1","tipo":"Análisis",
+     "descripcion":"Factores internos y externos que afectan al SGI. Revisión anual obligatoria.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["9001","39001"]},
+    {"id":"R002","nombre":"Matriz de Partes Interesadas",
+     "clausula_9001":"4.2","clausula_39001":"4.2","tipo":"Registro",
+     "descripcion":"Identificación de partes interesadas, sus necesidades y expectativas.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["9001","39001"]},
+    {"id":"R003","nombre":"Alcance del SGI",
+     "clausula_9001":"4.3","clausula_39001":"4.3","tipo":"Documento",
+     "descripcion":"Límites y aplicabilidad del Sistema de Gestión Integrado.",
+     "frecuencia_meses":0,"alerta_meses":0,"normas":["9001","39001"]},
+    {"id":"R004","nombre":"Política de Gestión Integral",
+     "clausula_9001":"5.2","clausula_39001":"5.2","tipo":"Política",
+     "descripcion":"Política de calidad y seguridad vial aprobada y difundida.",
+     "frecuencia_meses":0,"alerta_meses":0,"normas":["9001","39001"]},
+    {"id":"R005","nombre":"Matriz de Riesgos y Oportunidades",
+     "clausula_9001":"6.1","clausula_39001":"6.1","tipo":"Registro",
+     "descripcion":"Riesgos por proceso/sector con evaluación, controles y acciones.",
+     "frecuencia_meses":6,"alerta_meses":5,"normas":["9001","39001"]},
+    {"id":"R006","nombre":"Plan de Objetivos de Calidad y SV",
+     "clausula_9001":"6.2","clausula_39001":"6.2","tipo":"Plan",
+     "descripcion":"Objetivos medibles, responsables, fechas e indicadores de seguimiento.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["9001","39001"]},
+    {"id":"R007","nombre":"Matriz de Competencias / Perfiles de Puesto",
+     "clausula_9001":"7.2","clausula_39001":"7.2","tipo":"Registro",
+     "descripcion":"Competencias requeridas por puesto y evidencias de formación.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["9001","39001"]},
+    {"id":"R008","nombre":"Procedimiento de Control de Documentos",
+     "clausula_9001":"7.5","clausula_39001":"7.5","tipo":"Procedimiento",
+     "descripcion":"Cómo se crean, aprueban, distribuyen y controlan los documentos del SGI.",
+     "frecuencia_meses":0,"alerta_meses":0,"normas":["9001","39001"]},
+    {"id":"R009","nombre":"Procedimientos Operacionales Principales",
+     "clausula_9001":"8.1","clausula_39001":"8.1","tipo":"Procedimiento",
+     "descripcion":"Procedimientos de los procesos principales de la organización.",
+     "frecuencia_meses":0,"alerta_meses":0,"normas":["9001","39001"]},
+    {"id":"R010","nombre":"Plan de Seguimiento y Medición de Indicadores",
+     "clausula_9001":"9.1","clausula_39001":"9.1","tipo":"Plan",
+     "descripcion":"Qué se mide, con qué método, con qué frecuencia y quién lo hace.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["9001","39001"]},
+    {"id":"R011","nombre":"Programa de Auditoría Interna",
+     "clausula_9001":"9.2","clausula_39001":"9.2","tipo":"Plan",
+     "descripcion":"Plan anual de auditorías internas con alcance, fechas y auditores.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["9001","39001"]},
+    {"id":"R012","nombre":"Acta de Revisión por la Dirección",
+     "clausula_9001":"9.3","clausula_39001":"9.3","tipo":"Acta",
+     "descripcion":"Registro formal de revisión con todos los puntos obligatorios de la norma.",
+     "frecuencia_meses":12,"alerta_meses":4,"normas":["9001","39001"]},
+    {"id":"R013","nombre":"Registro de No Conformidades y Acciones Correctivas",
+     "clausula_9001":"10.2","clausula_39001":"10.1","tipo":"Registro",
+     "descripcion":"NC detectadas, análisis de causa raíz y acciones correctivas con seguimiento.",
+     "frecuencia_meses":0,"alerta_meses":0,"normas":["9001","39001"]},
+    {"id":"R014","nombre":"Análisis de Factores de Riesgo Viales",
+     "clausula_9001":"N/A","clausula_39001":"6.1","tipo":"Análisis",
+     "descripcion":"Velocidad, infraestructura, conductor, vehículo y entorno vial.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["39001"]},
+    {"id":"R015","nombre":"Metas de Comportamiento Vial",
+     "clausula_9001":"N/A","clausula_39001":"6.2","tipo":"Registro",
+     "descripcion":"Objetivos específicos de SV con indicadores cuantificables y fechas.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["39001"]},
+    {"id":"R016","nombre":"Plan de Gestión de Riesgos Viales",
+     "clausula_9001":"N/A","clausula_39001":"8.3","tipo":"Plan",
+     "descripcion":"Acciones concretas para reducir los factores de riesgo vial identificados.",
+     "frecuencia_meses":12,"alerta_meses":10,"normas":["39001"]},
+    {"id":"R017","nombre":"Indicadores de Desempeño en Seguridad Vial",
+     "clausula_9001":"N/A","clausula_39001":"8.4","tipo":"Registro",
+     "descripcion":"Accidentes, incidentes, km recorridos, infracciones, capacitaciones SV.",
+     "frecuencia_meses":3,"alerta_meses":3,"normas":["39001"]},
+]
+
+SECTORES_AUBASA = [
+    "Alta Dirección","Administración y Finanzas","Operaciones / Transporte",
+    "Mantenimiento Vehicular","Mantenimiento Infraestructura","RRHH / Capacitación",
+    "Compras y Proveedores","Seguridad Vial","Calidad / SGI",
+    "Tecnología / Sistemas","Atención al Usuario","Legal / Cumplimiento",
+]
+
 # ─── ACTIVIDADES OBLIGATORIAS DEL SGI ────────────────────────────────────────
 AGENDA_DEFAULT = [
     {"id":"A001","clausula_9001":"4.1 / 4.2","clausula_39001":"4.1 / 4.2",
@@ -959,6 +1041,130 @@ Responde SOLO JSON válido:
   "referencias": ["ISO 9001:2015 — Cláusula X", "Documento relacionado"]
 }}"""
     return _parse_json(_call_gemini(prompt))
+
+
+# ─── IA: SGI OPERATIVO ────────────────────────────────────────────────────────
+def analizar_checklist_gaps(faltantes: list, cargados: list) -> str:
+    prompt = f"""Eres consultor SGI certificado ISO 9001:2015 e ISO 39001:2015.
+
+DOCUMENTOS YA CARGADOS EN EL SGI ({len(cargados)}):
+{chr(10).join(f"  ✅ {c}" for c in cargados[:25])}
+
+DOCUMENTOS REQUERIDOS QUE FALTAN ({len(faltantes)}):
+{chr(10).join(f"  ❌ [{r['id']}] {r['nombre']} — Cláusula 9001:{r['clausula_9001']} / 39001:{r['clausula_39001']}" for r in faltantes)}
+
+{ISO_9001_CLAUSULAS}
+
+Analizá las brechas documentales y respondé:
+1. 🔴 **Riesgo normativo**: ¿Qué tan expuesto está el SGI por estos faltantes? (ALTO/MEDIO/BAJO)
+2. ⭐ **Top 5 documentos críticos** a elaborar primero con justificación
+3. ⏱️ **Estimación de esfuerzo** para cada uno (días/horas de trabajo)
+4. 📅 **Plan de carga sugerido** en 3 meses
+5. 💡 Consejo práctico para acelerar la elaboración
+
+Respuesta concreta, práctica, orientada a la acción inmediata."""
+    return _call_gemini(prompt) or "Error al analizar brechas."
+
+
+def debate_documento_sgi(doc_nombre: str, doc_texto: str, historial: list, pregunta: str) -> str:
+    conv = "\n".join(
+        f"{'Auditor' if m['role']=='user' else 'Asistente'}: {m['content']}"
+        for m in historial[-8:]
+    )
+    prompt = f"""Eres un Auditor Líder certificado ISO 9001:2015 e ISO 39001:2015 con 20 años de experiencia
+en sistemas de gestión de transporte y servicios públicos.
+
+Estás en una SESIÓN DE DEBATE / CONSULTA sobre el documento "{doc_nombre}" del SGI de AUBASA.
+Tu rol es:
+- Analizar críticamente la conformidad del documento con los requisitos normativos
+- Hacer preguntas profundas que el equipo SGI debería poder responder
+- Señalar debilidades, vacíos o inconsistencias con evidencias del propio texto
+- Si te piden una CHARLA o EXPLICACIÓN sobre el tema, desarrollarla con ejemplos del sector transporte
+- Dar orientación concreta y texto listo para insertar en el documento si lo solicitan
+
+CONTENIDO DEL DOCUMENTO:
+{doc_texto[:4000]}
+
+{ISO_9001_CLAUSULAS}
+
+HISTORIAL:
+{conv}
+
+CONSULTA ACTUAL: {pregunta}
+
+Respondé de forma dialogada, específica, usando el texto del documento como referencia."""
+    return _call_gemini(prompt) or "Error al generar respuesta."
+
+
+def analizar_indicadores_sgi(indicadores: list) -> str:
+    if not indicadores:
+        return "No hay indicadores cargados aún."
+    rows = "\n".join(
+        f"  - {i['nombre']} | Meta:{i['meta']} {i['unidad']} | "
+        f"Real:{i['valor_real']} {i['unidad']} | Período:{i['periodo']} | "
+        f"{'✅ OK' if _pct_kpi(i)>=100 else f'⚠️ {_pct_kpi(i):.0f}%'}"
+        for i in indicadores
+    )
+    prompt = f"""Eres experto en gestión de KPIs para Sistemas de Gestión Integrados ISO 9001 e ISO 39001.
+
+INDICADORES DEL SGI:
+{rows}
+
+{ISO_9001_CLAUSULAS}
+
+Analizá los indicadores y respondé:
+1. 📊 **Semáforo general**: evaluación global del desempeño del SGI
+2. 🔴 **Indicadores críticos**: los que están más lejos de la meta y por qué
+3. 📈 **Tendencias**: qué patrones observás
+4. ➕ **Indicadores faltantes**: cuáles clave para ISO 9001 e ISO 39001 no están siendo medidos
+5. 💡 **Acciones correctivas** concretas para los indicadores fuera de meta
+6. ✅ **Evaluación SMART**: ¿los indicadores definidos son específicos, medibles, alcanzables, relevantes y temporales?
+
+Respuesta práctica orientada a la mejora continua del SGI."""
+    return _call_gemini(prompt) or "Error al analizar indicadores."
+
+
+def _pct_kpi(ind: dict) -> float:
+    try:
+        meta = float(ind.get("meta", 0) or 0)
+        real = float(ind.get("valor_real", 0) or 0)
+        if meta == 0: return 100.0
+        if ind.get("tipo_meta",">=") == "<=":
+            return (meta / real * 100) if real > 0 else 100.0
+        return (real / meta * 100)
+    except Exception:
+        return 0.0
+
+
+def analizar_riesgos_sector(sector: str, riesgos: list) -> str:
+    if not riesgos:
+        r_txt = "  (Sin riesgos identificados aún)"
+    else:
+        r_txt = "\n".join(
+            f"  [{i+1}] {r['descripcion']} | Prob:{r['probabilidad']}/5 | "
+            f"Imp:{r['impacto']}/5 | Nivel:{r['probabilidad']*r['impacto']}/25 | "
+            f"Controles: {r.get('controles','Sin controles')}"
+            for i, r in enumerate(riesgos)
+        )
+    prompt = f"""Eres experto en gestión de riesgos para SGI (ISO 9001:2015, ISO 39001:2015 e ISO 31000).
+
+SECTOR ANALIZADO: {sector}
+
+RIESGOS IDENTIFICADOS:
+{r_txt}
+
+{ISO_9001_CLAUSULAS}
+
+Analizá el mapa de riesgos de este sector:
+1. 🗺️ **Evaluación general** del nivel de riesgo del sector
+2. ⚡ **Riesgos críticos** (nivel ≥ 15/25) que requieren acción inmediata
+3. ➕ **Riesgos adicionales** típicos para "{sector}" en una empresa de transporte público que podrían faltar
+4. 🛡️ **Controles sugeridos** concretos para los riesgos sin controles o con controles débiles
+5. 📋 **Cláusulas ISO expuestas**: cuáles cláusulas de ISO 9001 e ISO 39001 están en riesgo
+6. 📅 **Plan de tratamiento**: priorización en 30/60/90 días
+
+Respuesta técnica y accionable."""
+    return _call_gemini(prompt) or "Error al analizar riesgos."
 
 
 # ─── RAG QUERY ────────────────────────────────────────────────────────────────
@@ -2118,6 +2324,529 @@ def tab_auditoria(lista_maestra: list, analisis_cache: dict):
                 st.rerun()
 
 
+# ─── TAB: SGI OPERATIVO ───────────────────────────────────────────────────────
+def tab_sgi_operativo(lista_maestra: list, analisis_cache: dict):
+    from datetime import date as _date, timedelta
+    st.markdown('<p class="sec-title">🎯 SGI Operativo — Gestión Integral</p>', unsafe_allow_html=True)
+
+    checklist_cargas = load_json(CHECKLIST_PATH, {})
+    indicadores      = load_json(INDICADORES_PATH, [])
+    riesgos_map      = load_json(RIESGOS_PATH, {})
+    activos          = [d for d in lista_maestra if d.get("estado","activo")=="activo"]
+
+    ot1, ot2, ot3, ot4, ot5 = st.tabs([
+        "📋  Checklist SGI",
+        "⏰  Alertas y Vencimientos",
+        "💬  Debate / Consulta",
+        "📊  Indicadores",
+        "⚠️  Riesgos por Sector",
+    ])
+
+    # ── SUB-TAB 1: CHECKLIST ─────────────────────────────────────────────────
+    with ot1:
+        st.markdown(
+            '<div class="card-info" style="color:#1e293b!important;font-size:.84rem">'
+            'Lista de todos los documentos <b>obligatorios</b> según ISO 9001:2015 e ISO 39001:2015. '
+            'Indicá cuándo cargaste cada uno para calcular vencimientos automáticamente.</div>',
+            unsafe_allow_html=True,
+        )
+
+        # Filtro de norma
+        ch_norma = st.radio("Filtrar por norma:", ["Todas","Solo ISO 9001","Solo ISO 39001"],
+                            horizontal=True, key="chk_norma")
+        docs_filtrados = DOCS_REQUERIDOS_SGI
+        if ch_norma == "Solo ISO 9001":
+            docs_filtrados = [d for d in DOCS_REQUERIDOS_SGI if "9001" in d["normas"]]
+        elif ch_norma == "Solo ISO 39001":
+            docs_filtrados = [d for d in DOCS_REQUERIDOS_SGI if "39001" in d["normas"] and "9001" not in d["normas"]]
+
+        hoy = _date.today()
+        n_ok = n_falt = n_alert = 0
+
+        for req in docs_filtrados:
+            carga = checklist_cargas.get(req["id"], {})
+            fecha_str = carga.get("fecha_carga", "")
+            doc_vinculado = carga.get("doc_nombre", "")
+
+            # Detectar si hay un doc cargado que coincida automáticamente
+            if not doc_vinculado:
+                for d in activos:
+                    kws = req["nombre"].lower().split()[:3]
+                    if sum(1 for kw in kws if kw in d["nombre"].lower()) >= 2:
+                        doc_vinculado = d["nombre"]
+                        break
+
+            # Calcular estado
+            alerta = False; vencido = False; dias_restantes = None
+            if fecha_str and req["frecuencia_meses"] > 0:
+                try:
+                    f = _date.fromisoformat(fecha_str)
+                    vence = f + timedelta(days=req["frecuencia_meses"] * 30)
+                    alerta_desde = f + timedelta(days=req["alerta_meses"] * 30)
+                    dias_restantes = (vence - hoy).days
+                    vencido = dias_restantes < 0
+                    alerta  = not vencido and hoy >= alerta_desde
+                except Exception:
+                    pass
+
+            loaded = bool(doc_vinculado or fecha_str)
+            if   vencido: n_alert += 1
+            elif alerta:  n_alert += 1
+            elif loaded:  n_ok    += 1
+            else:         n_falt  += 1
+
+            # Color del card
+            if vencido:     bg, border = "#fff1f2","#ef4444"
+            elif alerta:    bg, border = "#fffbf0","#f59e0b"
+            elif loaded:    bg, border = "#f0fdf4","#22c55e"
+            else:           bg, border = "#f8fafc","#e5e7eb"
+
+            with st.expander(
+                f"{'🔴' if vencido else '🟡' if alerta else '✅' if loaded else '⭕'} "
+                f"[{req['clausula_9001']}/{req['clausula_39001']}] {req['nombre']}",
+                expanded=vencido or alerta,
+            ):
+                st.markdown(
+                    f'<div style="background:{bg};border-left:4px solid {border};'
+                    f'padding:10px 14px;border-radius:0 10px 10px 0;margin-bottom:8px">'
+                    f'<div style="font-size:.82rem;color:#374151">{req["descripcion"]}</div>'
+                    f'<div style="font-size:.75rem;color:#6b7280;margin-top:4px">'
+                    f'Tipo: <b>{req["tipo"]}</b> &nbsp;·&nbsp; '
+                    f'{"Revisión cada " + str(req["frecuencia_meses"]) + " meses" if req["frecuencia_meses"] else "Sin vencimiento periódico"}'
+                    f'</div></div>',
+                    unsafe_allow_html=True,
+                )
+                cc1, cc2, cc3 = st.columns([3, 2, 2])
+                with cc1:
+                    nuevo_doc = st.selectbox(
+                        "Documento cargado en el SGI:",
+                        ["— Ninguno vinculado —"] + [d["nombre"] for d in activos],
+                        index=([d["nombre"] for d in activos].index(doc_vinculado) + 1
+                               if doc_vinculado in [d["nombre"] for d in activos] else 0),
+                        key=f"chk_doc_{req['id']}",
+                        label_visibility="collapsed",
+                    )
+                with cc2:
+                    nueva_fecha = st.text_input(
+                        "Fecha de última carga/revisión",
+                        value=fecha_str or "",
+                        placeholder="YYYY-MM-DD",
+                        key=f"chk_fecha_{req['id']}",
+                        label_visibility="collapsed",
+                    )
+                with cc3:
+                    if st.button("💾 Guardar", key=f"chk_save_{req['id']}", use_container_width=True):
+                        checklist_cargas[req["id"]] = {
+                            "doc_nombre": nuevo_doc if nuevo_doc != "— Ninguno vinculado —" else "",
+                            "fecha_carga": nueva_fecha,
+                        }
+                        save_json(CHECKLIST_PATH, checklist_cargas)
+                        st.success("✅ Guardado"); st.rerun()
+
+                if dias_restantes is not None:
+                    if vencido:
+                        st.error(f"🔴 VENCIDO hace {abs(dias_restantes)} días — requiere revisión inmediata")
+                    elif alerta:
+                        st.warning(f"🟡 Vence en {dias_restantes} días — iniciá la revisión pronto")
+                    else:
+                        st.success(f"✅ Vigente — vence en {dias_restantes} días")
+
+        # KPIs del checklist
+        st.markdown("---")
+        ck1, ck2, ck3, ck4 = st.columns(4)
+        with ck1: st.metric("✅ Al día", n_ok)
+        with ck2: st.metric("🟡 Con alerta", n_alert)
+        with ck3: st.metric("⭕ Faltantes", n_falt)
+        with ck4: st.metric("Total requeridos", len(docs_filtrados))
+
+        # Botón análisis IA de brechas
+        faltantes_list = [r for r in docs_filtrados if not checklist_cargas.get(r["id"], {}).get("doc_nombre")
+                          and not checklist_cargas.get(r["id"], {}).get("fecha_carga")
+                          and not any(sum(1 for kw in r["nombre"].lower().split()[:3] if kw in d["nombre"].lower()) >= 2 for d in activos)]
+        cargados_names = [d["nombre"] for d in activos]
+        if st.button("🤖 Analizar brechas con IA — Plan de carga prioritario",
+                     use_container_width=True, type="primary", key="chk_ia_btn"):
+            with st.spinner("Analizando brechas documentales..."):
+                resp = analizar_checklist_gaps(faltantes_list, cargados_names)
+            st.session_state["chk_ia_resp"] = resp
+        if st.session_state.get("chk_ia_resp"):
+            st.markdown(f'<div class="card" style="margin-top:12px">'
+                        f'{st.session_state["chk_ia_resp"]}</div>', unsafe_allow_html=True)
+
+    # ── SUB-TAB 2: ALERTAS ───────────────────────────────────────────────────
+    with ot2:
+        st.markdown('<p class="sec-title">⏰ Vencimientos y Alertas del SGI</p>', unsafe_allow_html=True)
+        hoy = _date.today()
+        alertas = []
+
+        # Desde checklist
+        for req in DOCS_REQUERIDOS_SGI:
+            carga = checklist_cargas.get(req["id"], {})
+            fecha_str = carga.get("fecha_carga", "")
+            if fecha_str and req["frecuencia_meses"] > 0:
+                try:
+                    f = _date.fromisoformat(fecha_str)
+                    vence = f + timedelta(days=req["frecuencia_meses"] * 30)
+                    alerta_desde = f + timedelta(days=req["alerta_meses"] * 30)
+                    dias = (vence - hoy).days
+                    if dias < 60:
+                        alertas.append({
+                            "origen": "Documento requerido",
+                            "nombre": req["nombre"],
+                            "clausula": f"9001:{req['clausula_9001']} / 39001:{req['clausula_39001']}",
+                            "vence": vence.isoformat(),
+                            "dias": dias,
+                            "urgencia": "🔴 VENCIDO" if dias < 0 else "🟡 PRÓXIMO" if dias < 30 else "🟠 EN 2 MESES",
+                        })
+                except Exception:
+                    pass
+
+        # Desde agenda SGI
+        agenda = load_json(AGENDA_PATH, [])
+        for act in agenda:
+            fl = act.get("fecha_limite","")
+            if fl and act.get("estado","pendiente") == "pendiente":
+                try:
+                    f = _date.fromisoformat(fl)
+                    dias = (f - hoy).days
+                    if dias < 60:
+                        alertas.append({
+                            "origen": "Agenda SGI",
+                            "nombre": act["nombre"],
+                            "clausula": f"9001:{act['clausula_9001']} / 39001:{act['clausula_39001']}",
+                            "vence": fl,
+                            "dias": dias,
+                            "urgencia": "🔴 VENCIDO" if dias < 0 else "🟡 PRÓXIMO" if dias < 30 else "🟠 EN 2 MESES",
+                        })
+                except Exception:
+                    pass
+
+        alertas.sort(key=lambda x: x["dias"])
+
+        if not alertas:
+            st.success("✅ No hay vencimientos próximos en los próximos 60 días. ¡SGI al día!")
+        else:
+            al1, al2, al3 = st.columns(3)
+            with al1: st.metric("🔴 Vencidos",    sum(1 for a in alertas if a["dias"] < 0))
+            with al2: st.metric("🟡 Próx. 30 días", sum(1 for a in alertas if 0 <= a["dias"] < 30))
+            with al3: st.metric("🟠 Próx. 60 días", sum(1 for a in alertas if 30 <= a["dias"] < 60))
+            st.markdown("---")
+            for a in alertas:
+                bg  = "#fff1f2" if a["dias"]<0 else "#fffbf0" if a["dias"]<30 else "#fff7ed"
+                brd = "#ef4444" if a["dias"]<0 else "#f59e0b" if a["dias"]<30 else "#f97316"
+                st.markdown(
+                    f'<div style="background:{bg};border-left:4px solid {brd};padding:10px 14px;'
+                    f'border-radius:0 10px 10px 0;margin-bottom:8px">'
+                    f'<div style="display:flex;justify-content:space-between">'
+                    f'<b style="color:#1e293b">{a["urgencia"]} — {a["nombre"]}</b>'
+                    f'<span style="font-size:.75rem;color:#6b7280">📅 {a["vence"]}</span></div>'
+                    f'<div style="font-size:.78rem;color:#6b7280;margin-top:3px">'
+                    f'📌 {a["clausula"]} &nbsp;·&nbsp; Origen: {a["origen"]} &nbsp;·&nbsp; '
+                    f'{"<b style=color:#ef4444>Vencido hace "+str(abs(a["dias"]))+" días</b>" if a["dias"]<0 else "Vence en <b>"+str(a["dias"])+" días</b>"}'
+                    f'</div></div>',
+                    unsafe_allow_html=True,
+                )
+
+    # ── SUB-TAB 3: DEBATE / CONSULTA ─────────────────────────────────────────
+    with ot3:
+        st.markdown(
+            '<div class="card-info" style="color:#1e293b!important;font-size:.84rem">'
+            '💬 Seleccioná un documento del SGI y debatí con la IA sobre su conformidad, vacíos y mejoras. '
+            'Podés pedir una <b>charla completa</b>, hacer preguntas específicas o solicitar '
+            '<b>texto listo para insertar</b> en el documento.</div>',
+            unsafe_allow_html=True,
+        )
+        if not activos:
+            st.info("Suba documentos desde 📂 Documentos para poder debatirlos.")
+        else:
+            db_col1, db_col2 = st.columns([3, 1])
+            with db_col1:
+                doc_debate = st.selectbox("Documento a debatir:",
+                                          [d["nombre"] for d in activos],
+                                          key="debate_doc_sel")
+            with db_col2:
+                st.markdown("<br>", unsafe_allow_html=True)
+                if st.button("🗑️ Limpiar chat", key="debate_clear"):
+                    st.session_state["debate_msgs"] = []
+                    st.rerun()
+
+            # Preguntas rápidas de debate
+            qr1, qr2, qr3, qr4 = st.columns(4)
+            preguntas_rapidas = [
+                ("🔍 Auditoría crítica", "Hacé una auditoría crítica completa del documento. ¿Cumple con todos los requisitos de las cláusulas ISO relevantes? Señalá cada punto con evidencia del texto."),
+                ("📚 Charla sobre el tema", f"Dame una charla completa sobre los requisitos normativos que debe cumplir un documento de este tipo según ISO 9001 e ISO 39001. Usá ejemplos del sector transporte."),
+                ("✏️ Texto para mejorar", "Identificá los 3 puntos más débiles del documento y generá el texto exacto que debería reemplazar o agregarse."),
+                ("❓ Preguntas de auditor", "Generá 10 preguntas que un auditor externo haría sobre este documento. Las que el equipo debería poder responder para pasar la auditoría."),
+            ]
+            for col, (lbl, preg) in zip([qr1,qr2,qr3,qr4], preguntas_rapidas):
+                with col:
+                    if st.button(lbl, key=f"db_q_{lbl[:10]}", use_container_width=True):
+                        st.session_state["debate_quick_q"] = preg
+
+            # Chat
+            if "debate_msgs" not in st.session_state:
+                st.session_state["debate_msgs"] = []
+            msgs = st.session_state["debate_msgs"]
+
+            chat_area = st.container(height=420)
+            with chat_area:
+                if not msgs:
+                    st.markdown(
+                        '<div class="card-info" style="color:#1e293b!important">'
+                        '🤖 <b>Modo Debate activo.</b> Estoy listo para analizar, debatir y mejorar '
+                        'cualquier documento del SGI. Usá los botones de arriba o escribí tu consulta.</div>',
+                        unsafe_allow_html=True,
+                    )
+                for msg in msgs:
+                    with st.chat_message(msg["role"]): st.markdown(msg["content"])
+
+            quick_q = st.session_state.pop("debate_quick_q", None)
+            user_input = st.chat_input("Preguntá sobre el documento, pedí una charla, solicitá mejoras...",
+                                       key="debate_input")
+            question = quick_q or user_input
+            if question:
+                doc_texto = (analisis_cache.get(doc_debate, {}).get("_texto","")
+                             or get_document_text_from_chroma(doc_debate))
+                msgs.append({"role":"user","content":question})
+                with chat_area:
+                    with st.chat_message("user"): st.markdown(question)
+                    with st.chat_message("assistant"):
+                        with st.spinner("Analizando..."):
+                            resp = debate_documento_sgi(doc_debate, doc_texto, msgs, question)
+                        st.markdown(resp)
+                msgs.append({"role":"assistant","content":resp})
+                st.session_state["debate_msgs"] = msgs
+                st.rerun()
+
+    # ── SUB-TAB 4: INDICADORES ───────────────────────────────────────────────
+    with ot4:
+        st.markdown('<p class="sec-title">📊 Indicadores del SGI</p>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="card-info" style="color:#1e293b!important;font-size:.84rem">'
+            'Registrá los indicadores clave del SGI. La IA analiza el cumplimiento, detecta tendencias '
+            'y sugiere indicadores faltantes para ISO 9001 e ISO 39001.</div>',
+            unsafe_allow_html=True,
+        )
+
+        # Formulario nuevo indicador
+        with st.expander("➕ Agregar / Actualizar Indicador", expanded=not bool(indicadores)):
+            with st.form("form_indicador", clear_on_submit=True):
+                if1, if2, if3 = st.columns(3)
+                with if1:
+                    ind_nombre  = st.text_input("Nombre del indicador *", placeholder="Ej: Tasa de accidentabilidad")
+                    ind_proceso = st.text_input("Proceso / Área", placeholder="Ej: Seguridad Vial")
+                    ind_tipo    = st.selectbox("Tipo de meta", [">=","<=","="], help=">= : real debe ser ≥ meta (ej: satisfacción) | <= : real debe ser ≤ meta (ej: accidentes)")
+                with if2:
+                    ind_unidad  = st.text_input("Unidad", placeholder="Ej: %, cant, índice")
+                    ind_meta    = st.text_input("Meta", placeholder="Ej: 95")
+                    ind_real    = st.text_input("Valor real", placeholder="Ej: 87")
+                with if3:
+                    ind_periodo = st.text_input("Período", placeholder="Ej: Q1 2026")
+                    ind_claus   = st.text_input("Cláusula ISO", placeholder="Ej: 9.1 / 8.4")
+                    ind_resp    = st.text_input("Responsable", placeholder="Área o persona")
+                ind_obs = st.text_area("Observaciones", height=60)
+                if st.form_submit_button("💾 Guardar indicador", type="primary", use_container_width=True):
+                    if ind_nombre.strip():
+                        # Actualizar si ya existe
+                        existe = next((i for i,x in enumerate(indicadores) if x["nombre"]==ind_nombre.strip()), None)
+                        nuevo_ind = {"nombre":ind_nombre.strip(),"proceso":ind_proceso,"unidad":ind_unidad,
+                                     "meta":ind_meta,"valor_real":ind_real,"tipo_meta":ind_tipo,
+                                     "periodo":ind_periodo,"clausula":ind_claus,"responsable":ind_resp,
+                                     "observaciones":ind_obs,"fecha":datetime.now().strftime("%Y-%m-%d")}
+                        if existe is not None: indicadores[existe] = nuevo_ind
+                        else: indicadores.append(nuevo_ind)
+                        save_json(INDICADORES_PATH, indicadores)
+                        st.success("✅ Indicador guardado"); st.rerun()
+                    else: st.error("El nombre es obligatorio.")
+
+        if indicadores:
+            # Tabla de indicadores
+            rows_ind = ""
+            for ind in indicadores:
+                pct = _pct_kpi(ind)
+                color = "#22c55e" if pct>=100 else "#f59e0b" if pct>=80 else "#ef4444"
+                barra = f'<div style="background:#e5e7eb;border-radius:4px;height:8px;width:100%">' \
+                        f'<div style="background:{color};width:{min(pct,100):.0f}%;height:8px;border-radius:4px"></div></div>'
+                rows_ind += (
+                    f"<tr>"
+                    f"<td><b>{ind['nombre']}</b><br>"
+                    f"<span style='font-size:.7rem;color:#9ca3af'>{ind.get('proceso','')} · {ind.get('clausula','')}</span></td>"
+                    f"<td style='text-align:center'>{ind['meta']} {ind['unidad']}</td>"
+                    f"<td style='text-align:center;font-weight:700;color:{color}'>{ind['valor_real']} {ind['unidad']}</td>"
+                    f"<td>{barra}<span style='font-size:.72rem;color:{color}'>{pct:.0f}%</span></td>"
+                    f"<td style='font-size:.78rem'>{ind.get('periodo','')}</td>"
+                    f"<td style='font-size:.78rem'>{ind.get('responsable','')}</td>"
+                    f"</tr>"
+                )
+            st.markdown(
+                f'<table class="matriz-table"><thead><tr>'
+                f'<th>Indicador</th><th>Meta</th><th>Real</th>'
+                f'<th style="width:160px">Cumplimiento</th><th>Período</th><th>Responsable</th>'
+                f'</tr></thead><tbody>{rows_ind}</tbody></table>',
+                unsafe_allow_html=True,
+            )
+            st.markdown("<br>", unsafe_allow_html=True)
+
+            ic1, ic2 = st.columns([2,3])
+            with ic1:
+                if st.button("🤖 Analizar indicadores con IA", type="primary",
+                             use_container_width=True, key="ind_ia_btn"):
+                    with st.spinner("Analizando indicadores..."):
+                        resp = analizar_indicadores_sgi(indicadores)
+                    st.session_state["ind_ia_resp"] = resp
+            with ic2:
+                # Eliminar indicador
+                ind_del = st.selectbox("Eliminar:", ["—"]+[i["nombre"] for i in indicadores],
+                                       key="ind_del_sel", label_visibility="collapsed")
+                if ind_del != "—" and st.button("🗑️ Eliminar", key="ind_del_btn"):
+                    indicadores = [i for i in indicadores if i["nombre"] != ind_del]
+                    save_json(INDICADORES_PATH, indicadores); st.rerun()
+
+            if st.session_state.get("ind_ia_resp"):
+                with st.expander("🤖 Análisis IA de Indicadores", expanded=True):
+                    st.markdown(st.session_state["ind_ia_resp"])
+
+    # ── SUB-TAB 5: RIESGOS POR SECTOR ───────────────────────────────────────
+    with ot5:
+        st.markdown('<p class="sec-title">⚠️ Análisis de Riesgos por Sector</p>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="card-info" style="color:#1e293b!important;font-size:.84rem">'
+            'Cargá los riesgos de cada sector uno por uno. La IA analiza la completitud, '
+            'sugiere riesgos faltantes y recomienda controles para los más críticos.</div>',
+            unsafe_allow_html=True,
+        )
+
+        rs1, rs2 = st.columns([2, 3])
+        with rs1:
+            sector_opciones = SECTORES_AUBASA + [s for s in riesgos_map.keys() if s not in SECTORES_AUBASA]
+            sector_sel = st.selectbox("Sector a gestionar:", sector_opciones, key="riesgo_sector_sel")
+            sector_nuevo = st.text_input("O ingresá un sector nuevo:", key="riesgo_sector_nuevo",
+                                         placeholder="Ej: Limpieza y Mantenimiento")
+            if sector_nuevo.strip():
+                sector_sel = sector_nuevo.strip()
+
+        with rs2:
+            st.markdown(f'<div class="card" style="padding:12px 16px">'
+                        f'<b>Sector seleccionado:</b> {sector_sel}<br>'
+                        f'<span style="font-size:.79rem;color:#6b7280">'
+                        f'{len(riesgos_map.get(sector_sel,[]))} riesgo(s) cargado(s)</span></div>',
+                        unsafe_allow_html=True)
+
+        # Formulario agregar riesgo
+        with st.expander(f"➕ Agregar riesgo para: {sector_sel}", expanded=False):
+            with st.form(f"form_riesgo_{sector_sel}", clear_on_submit=True):
+                rd1, rd2 = st.columns(2)
+                with rd1:
+                    r_desc  = st.text_area("Descripción del riesgo *", height=80,
+                                            placeholder="Ej: Conductor sin capacitación en manejo defensivo")
+                    r_prob  = st.slider("Probabilidad (1=rara, 5=casi segura)", 1, 5, 3)
+                    r_imp   = st.slider("Impacto (1=insignificante, 5=catastrófico)", 1, 5, 3)
+                with rd2:
+                    r_ctrl  = st.text_area("Controles existentes", height=80,
+                                            placeholder="Ej: Capacitación anual, checklist diario del vehículo")
+                    r_claus = st.text_input("Cláusula ISO relacionada", placeholder="Ej: ISO 39001 — 6.1")
+                    r_resp  = st.text_input("Responsable del control", placeholder="Ej: Jefe de Seguridad Vial")
+
+                nivel = r_prob * r_imp
+                col_nivel = "#ef4444" if nivel>=15 else "#f59e0b" if nivel>=9 else "#22c55e"
+                st.markdown(
+                    f'<div style="text-align:center;padding:8px;background:{col_nivel}20;'
+                    f'border:2px solid {col_nivel};border-radius:8px;margin:4px 0">'
+                    f'<b style="color:{col_nivel}">Nivel de riesgo: {nivel}/25 '
+                    f'{"🔴 CRÍTICO" if nivel>=15 else "🟡 MODERADO" if nivel>=9 else "🟢 BAJO"}</b></div>',
+                    unsafe_allow_html=True,
+                )
+                if st.form_submit_button("💾 Agregar riesgo", type="primary", use_container_width=True):
+                    if r_desc.strip():
+                        riesgos_map.setdefault(sector_sel, []).append({
+                            "descripcion": r_desc.strip(),
+                            "probabilidad": r_prob, "impacto": r_imp,
+                            "controles": r_ctrl.strip(), "clausula": r_claus,
+                            "responsable": r_resp,
+                            "fecha": datetime.now().strftime("%Y-%m-%d"),
+                        })
+                        save_json(RIESGOS_PATH, riesgos_map)
+                        st.success("✅ Riesgo agregado"); st.rerun()
+                    else: st.error("La descripción es obligatoria.")
+
+        # Tabla de riesgos del sector
+        riesgos_sector = riesgos_map.get(sector_sel, [])
+        if riesgos_sector:
+            rows_r = ""
+            for i, r in enumerate(sorted(riesgos_sector,
+                                          key=lambda x: x["probabilidad"]*x["impacto"], reverse=True)):
+                nivel = r["probabilidad"] * r["impacto"]
+                col   = "#ef4444" if nivel>=15 else "#f59e0b" if nivel>=9 else "#22c55e"
+                rows_r += (
+                    f"<tr>"
+                    f"<td style='font-size:.82rem'>{r['descripcion']}</td>"
+                    f"<td style='text-align:center'>{r['probabilidad']}</td>"
+                    f"<td style='text-align:center'>{r['impacto']}</td>"
+                    f"<td style='text-align:center;font-weight:800;color:{col}'>{nivel}</td>"
+                    f"<td style='font-size:.78rem'>{r.get('controles','—')}</td>"
+                    f"<td style='font-size:.75rem;color:#6b7280'>{r.get('clausula','—')}</td>"
+                    f"</tr>"
+                )
+            st.markdown(
+                f'<table class="matriz-table"><thead><tr>'
+                f'<th>Riesgo</th><th>Prob.</th><th>Imp.</th>'
+                f'<th>Nivel</th><th>Controles</th><th>Cláusula</th>'
+                f'</tr></thead><tbody>{rows_r}</tbody></table>',
+                unsafe_allow_html=True,
+            )
+            st.markdown("<br>", unsafe_allow_html=True)
+
+            rb1, rb2 = st.columns([2, 2])
+            with rb1:
+                if st.button(f"🤖 Analizar riesgos de {sector_sel}", type="primary",
+                             use_container_width=True, key=f"riesgo_ia_{sector_sel}"):
+                    with st.spinner(f"Analizando riesgos de {sector_sel}..."):
+                        resp = analizar_riesgos_sector(sector_sel, riesgos_sector)
+                    st.session_state[f"riesgo_ia_resp_{sector_sel}"] = resp
+            with rb2:
+                if st.button(f"🗑️ Limpiar riesgos de {sector_sel}", key=f"riesgo_clear_{sector_sel}",
+                             use_container_width=True):
+                    riesgos_map[sector_sel] = []
+                    save_json(RIESGOS_PATH, riesgos_map); st.rerun()
+
+            if st.session_state.get(f"riesgo_ia_resp_{sector_sel}"):
+                with st.expander("🤖 Análisis IA de Riesgos", expanded=True):
+                    st.markdown(st.session_state[f"riesgo_ia_resp_{sector_sel}"])
+        else:
+            st.info(f"No hay riesgos cargados para **{sector_sel}** aún. Usá el formulario de arriba para agregar.")
+
+        # Resumen general de riesgos
+        if riesgos_map:
+            st.markdown("---")
+            st.markdown('<p class="sec-title">🗺️ Resumen de Riesgos por Sector</p>', unsafe_allow_html=True)
+            res_rows = ""
+            for sec, rsgs in sorted(riesgos_map.items()):
+                if not rsgs: continue
+                criticos  = sum(1 for r in rsgs if r["probabilidad"]*r["impacto"] >= 15)
+                moderados = sum(1 for r in rsgs if 9 <= r["probabilidad"]*r["impacto"] < 15)
+                bajos     = sum(1 for r in rsgs if r["probabilidad"]*r["impacto"] < 9)
+                nivel_max = max((r["probabilidad"]*r["impacto"] for r in rsgs), default=0)
+                col_max   = "#ef4444" if nivel_max>=15 else "#f59e0b" if nivel_max>=9 else "#22c55e"
+                res_rows += (
+                    f"<tr>"
+                    f"<td><b>{sec}</b></td>"
+                    f"<td style='text-align:center'>{len(rsgs)}</td>"
+                    f"<td style='text-align:center;color:#ef4444;font-weight:700'>{criticos}</td>"
+                    f"<td style='text-align:center;color:#f59e0b;font-weight:700'>{moderados}</td>"
+                    f"<td style='text-align:center;color:#22c55e;font-weight:700'>{bajos}</td>"
+                    f"<td style='text-align:center;font-weight:800;color:{col_max}'>{nivel_max}/25</td>"
+                    f"</tr>"
+                )
+            if res_rows:
+                st.markdown(
+                    f'<table class="matriz-table"><thead><tr>'
+                    f'<th>Sector</th><th>Total</th><th>🔴 Críticos</th>'
+                    f'<th>🟡 Moderados</th><th>🟢 Bajos</th><th>Nivel máx.</th>'
+                    f'</tr></thead><tbody>{res_rows}</tbody></table>',
+                    unsafe_allow_html=True,
+                )
+
+
 # ─── SIDEBAR ──────────────────────────────────────────────────────────────────
 def render_sidebar(lista_maestra: list, incongruencias: dict):
     with st.sidebar:
@@ -2906,7 +3635,7 @@ def main():
         st.markdown("---")
         render_right_panel(lista_maestra, analisis_cache)
 
-    tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9 = st.tabs([
+    tab1,tab2,tab3,tab4,tab5,tab6,tab7,tab8,tab9,tab10 = st.tabs([
         "📂  Documentos",
         "📋  Lista Maestra",
         "🔄  Revisiones",
@@ -2916,6 +3645,7 @@ def main():
         "🔍  Auditoría",
         "📝  Crear Doc",
         "💬  Chatbot",
+        "🎯  SGI Operativo",
     ])
     with tab1:
         st.markdown("<br>", unsafe_allow_html=True)
@@ -2945,6 +3675,9 @@ def main():
     with tab9:
         st.markdown("<br>", unsafe_allow_html=True)
         tab_chatbot(lista_maestra)
+    with tab10:
+        st.markdown("<br>", unsafe_allow_html=True)
+        tab_sgi_operativo(lista_maestra, analisis_cache)
 
 
 if __name__ == "__main__":
