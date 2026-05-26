@@ -25,3 +25,17 @@ Desktop.ini
 ecosystem.config.js
 iniciar-aubasa.bat
 crear-tarea-inicio.ps1
+
+# SGI Asistente — archivos locales generados
+chroma_db/
+__pycache__/
+*.pyc
+.claude/worktrees/
+
+# Datos locales del SGI (se regeneran al subir documentos)
+analisis_documentos.json
+incongruencias.json
+revisiones.json
+sugerencias_nuevos.json
+hallazgos_auditoria.json
+agenda_sgi.json

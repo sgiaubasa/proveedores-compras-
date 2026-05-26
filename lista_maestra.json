@@ -1,0 +1,245 @@
+[
+  {
+    "hash": "2f454eb4",
+    "nombre": "Manual de Gestion Rev.05  (21.Abril.2026).pdf",
+    "tipo": "Manual",
+    "iso9001": "4.1 Contexto de la organización · 4.2 Necesidades y expectativas de las partes interesadas · 4.3 Alcance del SGC · 5.2 Política de la calidad · 5.3 Roles, responsabilidades y autoridades · 6.2 Objetivos de la calidad · 6.3 Planificación de los cambios · 7.1.6 Conocimientos de la organización · 7.5 Información documentada · 8.2.2 Requisitos de productos y servicios · 9.1 Seguimiento, medición, análisis y evaluación",
+    "iso39001": "4.1 Contexto de la organización · 4.2 Necesidades y expectativas de las partes interesadas · 4.3 Alcance del SGSV · 5.2 Política de la seguridad vial · 5.3 Roles, responsabilidades y autoridades · 6.2 Objetivos de la seguridad vial · 6.3 Planificación de los cambios · 7.1 Recursos · 7.5 Información documentada · 9.1 Seguimiento, medición, análisis y evaluación",
+    "estado": "activo",
+    "fecha_ingreso": ""
+  },
+  {
+    "hash": "d943cc3a",
+    "nombre": "Anexo I Mapa del Corredor Rev.03.pdf",
+    "tipo": "Otro",
+    "iso9001": "4.3 Determinación del alcance del sistema de gestión de la calidad, 7.5 Información documentada",
+    "iso39001": "4.3 Determinación del alcance del sistema de gestión de la seguridad vial, 7.5 Información documentada",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "25503bc7",
+    "nombre": "Anexo II Mapa de Procesos Rev.03.pdf",
+    "tipo": "Manual",
+    "iso9001": "4.4 Sistema de gestión de la calidad y sus procesos",
+    "iso39001": "4.4 Sistema de gestión de la seguridad vial y sus procesos",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "8e150796",
+    "nombre": "Anexo III Mapa de Procesos Svia Rev.01.pdf",
+    "tipo": "Otro",
+    "iso9001": "4.4 Sistema de gestión de la calidad y sus procesos, 7.5 Información documentada",
+    "iso39001": "4.4 Sistema de gestión de la seguridad vial y sus procesos, 7.5 Información documentada",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "0bdd9c4b",
+    "nombre": "Anexo IV Matriz de interaccion de los procesos Rev 04.pdf",
+    "tipo": "Otro",
+    "iso9001": "4.4 Sistema de gestión de la calidad y sus procesos, 7.5 Información documentada",
+    "iso39001": "4.4 Sistema de gestión de la seguridad vial y sus procesos, 7.5 Información documentada",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "5e73dd66",
+    "nombre": "Anexo V Política de Gestión Integrada Rev 05 (2).pdf",
+    "tipo": "Política",
+    "iso9001": "5.1 Liderazgo y compromiso, 5.2 Política de la calidad, 7.5 Información documentada, 10.3 Mejora continua",
+    "iso39001": "5.1 Liderazgo y compromiso, 5.2 Política de la seguridad vial, 7.5 Información documentada, 10.3 Mejora continua",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "0582ddc5",
+    "nombre": "Anexo VI Matriz de comunicacion Rev.03.pdf",
+    "tipo": "Plan",
+    "iso9001": "4.2 Understanding the needs and expectations of interested parties, 5.2.2 Communicating the quality policy, 6.2 Quality objectives and planning to achieve them, 7.4 Communication, 9.1.1 General (Monitoring, measurement, analysis and evaluation), 9.2 Internal audit, 9.3 Management review, 10.2 Nonconformity and corrective action",
+    "iso39001": "4.2 Understanding the needs and expectations of interested parties, 6.1 Actions to address risks and opportunities, 7.4 Communication, 8.1 Operational planning and control, 9.1 Monitoring, measurement, analysis and evaluation, 9.3 Management review, 10.2 Nonconformity and corrective action",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "f21f4737",
+    "nombre": "AUBASA ITAU-04-01 Atención de Consultas, Sugerencias, Quejas y Reclamos Rev. P07 01.Abr.2026.pdf",
+    "tipo": "Instructivo",
+    "iso9001": "8.2.1 Comunicación con el cliente, 9.1.2 Satisfacción del cliente, 10.2 No conformidad y acción correctiva",
+    "iso39001": "4.2 Comprensión de las necesidades y expectativas de las partes interesadas, 7.4 Comunicación, 10.2 No conformidad y acción correctiva",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "f6f1f0e3",
+    "nombre": "ITAU-04-01 Anexo 1 Formulario del Libro de Quejas y Sugerencias Rev. 01.pdf",
+    "tipo": "Formulario",
+    "iso9001": "8.2 Comunicación con el cliente, 9.1.2 Satisfacción del cliente, 10.2 No conformidad y acción correctiva, 7.5 Información documentada",
+    "iso39001": "7.4 Comunicación, 9.1 Monitoreo, medición, análisis y evaluación, 10.1 No conformidad y acción correctiva, 7.5 Información documentada",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "e738cc06",
+    "nombre": "ITAU-04-01 Anexo 2 Formulario del Libro de Reclamos Rev. 01.pdf",
+    "tipo": "Formulario",
+    "iso9001": "7.5 Información documentada, 9.1.2 Satisfacción del cliente, 10.2 No conformidad y acción correctiva",
+    "iso39001": "7.5 Información documentada, 10.2 No conformidad y acción correctiva",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "d397b074",
+    "nombre": "ITAU-04-01 Anexo 3 Modelo de Acuerdo Conciliatorio Rev. 01.pdf",
+    "tipo": "Formulario",
+    "iso9001": "7.5 Documented information, 8.7 Control of nonconforming outputs, 9.1.2 Customer satisfaction, 10.2 Nonconformity and corrective action",
+    "iso39001": "7.5 Documented information, 8.1 Operational planning and control, 9.1 Monitoring, measurement, analysis and evaluation, 9.1.3 RTS incident investigation, 10.1 Nonconformity and corrective action",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "9668b911",
+    "nombre": "ITAU-04-01 Anexo 4 Procedimiento para la elaboración de  respuestas modelo para reclamos y quejas Rev.02.pdf",
+    "tipo": "Procedimiento",
+    "iso9001": "Capítulo 8: Medición, análisis y mejora, Capítulo 9: Revisión y mejora del sistema de gestión de la calidad",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "b3a75038",
+    "nombre": "PAU-01 Contexto de la organizacion Rev.05.pdf",
+    "tipo": "Procedimiento",
+    "iso9001": "4.1 Comprensión de la organización y de su contexto",
+    "iso39001": "4.1 Comprensión de la organización y de su contexto",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "5b855089",
+    "nombre": "PAU-01 Anexo 1 Esquema factores del entorno de la empresa Rev.01.pdf",
+    "tipo": "Otro",
+    "iso9001": "4.1 Comprensión de la organización y de su contexto, 4.2 Comprensión de las necesidades y expectativas de las partes interesadas",
+    "iso39001": "4.1 Comprensión de la organización y de su contexto, 4.2 Comprensión de las necesidades y expectativas de las partes interesadas",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "f00c7982",
+    "nombre": "PAU-01 Anexo 2  Analisis de Contexto Estratégico Rev.03.pdf",
+    "tipo": "Registro",
+    "iso9001": "Capítulo 4: Contexto de la organización, Capítulo 6: Liderazgo, Capítulo 9: Evaluación del desempeño",
+    "iso39001": "Capítulo 4: Contexto de la organización, Capítulo 6: Liderazgo, Capítulo 9: Evaluación del desempeño",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "52e922fe",
+    "nombre": "Anexo 2.1 Criterios Rev.01  PAU-01.pdf",
+    "tipo": "Procedimiento",
+    "iso9001": "Capítulo 6: Planificación, Capítulo 8: Operación, Capítulo 9: Evaluación del desempeño",
+    "iso39001": "Capítulo 5: Requisitos del sistema de gestión de la seguridad vial, Capítulo 6: Planificación, Capítulo 8: Operación",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "a2d1bd9e",
+    "nombre": "PAU-01 Anexo 2.2 Check-list de Control de Actualización del Análisis de Contexto Estratégico Rev.00.pdf",
+    "tipo": "Formulario",
+    "iso9001": "Capítulo 4: Contexto de la organización, Capítulo 6: Liderazgo, Capítulo 7: Soporte",
+    "iso39001": "Capítulo 4: Contexto de la organización, Capítulo 6: Liderazgo, Capítulo 8: Operación",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "d9da5b1b",
+    "nombre": "AUBASA PAU-02 Informacion Documentada REV. 07.pdf",
+    "tipo": "Procedimiento",
+    "iso9001": "7.5 Información documentada",
+    "iso39001": "7.5 Información documentada",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "044ff393",
+    "nombre": "PAU-02 ANEXO 1 Información Documentada. Estado de Revision REV.02.pdf",
+    "tipo": "Registro",
+    "iso9001": "7.5 Documentación",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "b71f9448",
+    "nombre": "PAU02 ANEXO 3 Procedimiento de control y actualización de la Matriz Legal rev. 3 (1).pdf",
+    "tipo": "Procedimiento",
+    "iso9001": "4.2 Comprensión de las necesidades y expectativas de las partes interesadas, 6.1 Acciones para abordar riesgos y oportunidades, 7.4 Comunicación, 7.5 Información documentada",
+    "iso39001": "4.2 Comprensión de las necesidades y expectativas de las partes interesadas, 6.1.2 Requisitos legales y otros requisitos, 7.4 Comunicación, 7.5 Información documentada",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "17fdfdfe",
+    "nombre": "PAU-02 ANEXO 2 REV. 02 Distr. Politica de  Gestion Integral.pdf",
+    "tipo": "Política",
+    "iso9001": "Capítulo 5 Liderazgo, Capítulo 7 Soporte",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "a9bd0e94",
+    "nombre": "PAU02 ANEXO 3.1 Matriz Legal y Control de Documentación Externa rev. 1 (1).pdf",
+    "tipo": "Otro",
+    "iso9001": "No aplica",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "b08347ea",
+    "nombre": "PAU02 ANEXO 3.2 Partes Interesadas rev. 2 (1).pdf",
+    "tipo": "Otro",
+    "iso9001": "No aplica",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "144c4937",
+    "nombre": "PAU02 ANEXO 3.3 Control diario de boletines Oficiales rev. 00 (1).pdf",
+    "tipo": "Otro",
+    "iso9001": "No aplica",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "cfdcce14",
+    "nombre": "PAU-02 ANEXO 4 REV.01 Formato Man.(03-07-23).pdf",
+    "tipo": "Manual",
+    "iso9001": "4. Contexto de la organización, 5. Liderazgo, 6. Planificación, 7. Soporte, 8. Operación, 9. Evaluación del desempeño, 10. Mejora",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "2eb9b7d1",
+    "nombre": "PAU-02 ANEXO 5 REV.01 Formato de los Proc.(03-07-23).pdf",
+    "tipo": "Procedimiento",
+    "iso9001": "Capítulo 4: Contexto de la organización, Capítulo 7: Soporte, Capítulo 8: Operación",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  },
+  {
+    "hash": "1f8999a3",
+    "nombre": "PAU-02 ANEXO 6 REV.01 Formato de las Instrucciones de Trabajo.(03-07-23).pdf",
+    "tipo": "Instructivo",
+    "iso9001": "Capítulo 7: Soporte, Capítulo 8: Operación, Capítulo 9: Evaluación del desempeño",
+    "iso39001": "No aplica",
+    "estado": "activo",
+    "fecha_ingreso": "2026-05-24"
+  }
+]
