@@ -17,6 +17,8 @@ const usuarioSchema = new mongoose.Schema({
   sectores: [{ type: String }],
   activo:             { type: Boolean, default: true },
   debeCambiarPassword:{ type: Boolean, default: true },
+  resetToken:         { type: String },
+  resetTokenExpira:   { type: Date },
   ultimoAcceso: Date
 }, { timestamps: true })
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
@@ -67,6 +67,13 @@ export default function Login() {
             {loading ? 'Ingresando…' : 'Ingresar'}
           </button>
         </form>
+
+        <div className="text-center mt-4">
+          <Link to="/forgot-password"
+            className="text-xs text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
 
         <p className="text-xs text-gray-400 text-center mt-6">
           ISO 9001:2015 · ISO 39001:2015 · PAU/06

@@ -14,6 +14,8 @@ import ListadoProveedores from './pages/ListadoProveedores'
 import ListadoProveedoresEditar from './pages/ListadoProveedoresEditar'
 import Dashboard from './pages/Dashboard'
 import CambiarPassword from './pages/CambiarPassword'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function ProtectedRoute({ children, roles }) {
   const { usuario } = useAuth()
@@ -38,6 +40,8 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={usuario ? <Navigate to="/" replace /> : <Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       {/* Cambio de contraseña: accesible con sesión activa, sin pasar por ProtectedRoute */}
       <Route path="/cambiar-password" element={usuario ? <CambiarPassword /> : <Navigate to="/login" replace />} />
