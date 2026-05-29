@@ -141,7 +141,7 @@ export default function NuevaEvaluacion() {
               {sitio && <span className="ml-2 text-xs text-blue-600 font-normal">{sitio}</span>}
             </label>
             <div className="flex flex-wrap gap-2">
-              {['Peaje', 'Dock Sud', 'Bernal', 'Berazategui', 'Quilmes', 'Hudson', 'Samborombón'].map(s => (
+              {['Dock Sud', 'Bernal', 'Berazategui', 'Quilmes', 'Hudson', 'Samborombón'].map(s => (
                 <button key={s} type="button" onClick={() => setSitio(sitio === s ? '' : s)}
                   className={`px-3 py-1.5 text-sm rounded-lg border font-medium transition-colors ${sitio === s ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 text-gray-700 hover:border-blue-400'}`}>
                   {s}

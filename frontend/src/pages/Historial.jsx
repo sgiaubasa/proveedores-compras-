@@ -107,6 +107,7 @@ export default function Historial() {
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">ET</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Trimestre</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Áreas</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-600">Sitio</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Evaluador</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Nota Final</th>
                 <th className="px-4 py-3"></th>
@@ -125,6 +126,9 @@ export default function Historial() {
                   </td>
                   <td className="px-4 py-3 text-gray-600 text-xs">
                     {(ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []).join(' + ') || '—'}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-gray-600">
+                    {ev.sitio || <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-xs">
                     <div className="font-medium text-gray-800">{ev.userId?.nombre || '—'}</div>
@@ -213,6 +217,7 @@ function ModalDetalle({ ev, onClose }) {
             <h2 className="text-lg font-bold">{ev.etId?.codigo} · {ev.trimestre} {ev.anio}</h2>
             <p className="text-sm text-gray-500">
               {ev.etId?.nombre} · {(ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []).join(' + ') || '—'}
+              {ev.sitio && <span className="ml-2 text-blue-600 font-medium">· {ev.sitio}</span>}
             </p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
@@ -267,6 +272,7 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
   const [trimestre, setTrimestre] = useState(ev.trimestre)
   const [anio, setAnio]           = useState(ev.anio)
   const [areas, setAreas]         = useState(ev.areas?.length ? ev.areas : ev.area ? [ev.area] : [])
+  const [sitio, setSitio]         = useState(ev.sitio || '')
   const [obs, setObs]             = useState(ev.obs || '')
   const [userId, setUserId]       = useState(ev.userId?._id || ev.userId || '')
   const [puntajes, setPuntajes]   = useState(Object.fromEntries(ev.items.map(it => [it.n, it.puntaje])))
@@ -290,7 +296,7 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
         ponderacion: it.ponderacion,
         obs: obsItems[it.n] || ''
       }))
-      const payload = { trimestre, anio, areas, obs, items }
+      const payload = { trimestre, anio, areas, sitio, obs, items }
       if (esAdmin && userId) payload.userId = userId
       const r = await api.put(`/evaluaciones/${ev._id}`, payload)
       onGuardado({ ...ev, ...r.data })
@@ -355,6 +361,22 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Área(s) evaluadora(s)</label>
             <AreasSelector value={areas} onChange={setAreas} />
+          </div>
+
+          {/* Sitio */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Sitio
+              {sitio && <span className="ml-2 text-xs text-blue-600 font-normal">{sitio}</span>}
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {['Dock Sud', 'Bernal', 'Berazategui', 'Quilmes', 'Hudson', 'Samborombón'].map(s => (
+                <button key={s} type="button" onClick={() => setSitio(sitio === s ? '' : s)}
+                  className={`px-3 py-1.5 text-sm rounded-lg border font-medium transition-colors ${sitio === s ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 text-gray-700 hover:border-blue-400'}`}>
+                  {s}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Observaciones */}
