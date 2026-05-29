@@ -15,6 +15,7 @@ const evaluacionSchema = new mongoose.Schema({
   trimestre: { type: String, enum: ['1T','2T','3T','4T'], required: true },
   anio:      { type: Number, required: true },
   areas:     [String],
+  sitio:     { type: String, default: '' },
   items:     [itemResultSchema],
   obs:       String,
   // Calculados al guardar
