@@ -16,6 +16,21 @@ export default function Historial() {
   const [resumen, setResumen] = useState(null)
   const [editando, setEditando] = useState(null)   // evaluación en edición
 
+  // Devuelve true si el usuario tiene permiso explícito sobre la ET de esta evaluación
+  const tieneEtPermitida = ev => {
+    const etId = ev.etId?._id || ev.etId
+    if (!etId) return false
+    return (usuario?.etIdsPermitidos || []).some(e => (e._id || e) === etId)
+  }
+
+  // Devuelve true si el usuario puede ver esta evaluación (sector asignado o ET permitida)
+  const puedeVer = ev => {
+    if (tieneRol('admin')) return true
+    const evAreas = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
+    if ((usuario?.sectores || []).some(s => evAreas.includes(s))) return true
+    return tieneEtPermitida(ev)
+  }
+
   // Devuelve true si el usuario puede editar esta evaluación
   const puedeEditar = ev => {
     if (tieneRol('admin')) return true
@@ -23,13 +38,10 @@ export default function Historial() {
     return (usuario?.sectores || []).some(s => evAreas.includes(s))
   }
 
-  // Evaluaciones visibles según sector (admin ve todo)
+  // Evaluaciones visibles según sector o ET permitida (admin ve todo)
   const evaluacionesVisibles = tieneRol('admin')
     ? evaluaciones
-    : evaluaciones.filter(ev => {
-        const evAreas = ev.areas?.length ? ev.areas : ev.area ? [ev.area] : []
-        return (usuario?.sectores || []).some(s => evAreas.includes(s))
-      })
+    : evaluaciones.filter(puedeVer)
 
   const [filtroEt, setFiltroEt]     = useState('')
   const [filtroTrim, setFiltroTrim] = useState('')
