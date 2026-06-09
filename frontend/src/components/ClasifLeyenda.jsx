@@ -4,14 +4,30 @@
  */
 
 // ── Cuadro de referencia documental (estilo ISO) ─────────────────────────────
-export function DocRef({ codigo = 'PAU/06-A01', revision = '03' }) {
+export function DocRef({ codigo = 'PAU/06-A01', revision = '03', sidebar = false }) {
   const hoy   = new Date()
   const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
   const fecha = `${meses[hoy.getMonth()]}. ${hoy.getFullYear()}`
 
+  // Versión compacta para el sidebar: sin columna de ícono, todo en ancho completo
+  if (sidebar) {
+    return (
+      <div className="w-full border border-gray-200 rounded-lg overflow-hidden text-xs bg-gray-50">
+        <div className="divide-y divide-gray-200">
+          {[['Código', codigo], ['Revisión', revision], ['Fecha', fecha]].map(([label, value]) => (
+            <div key={label} className="flex items-center justify-between px-2.5 py-1">
+              <span className="text-gray-400 shrink-0">{label}</span>
+              <span className="font-semibold text-gray-700 text-right">{value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  // Versión completa (con ícono) para usar fuera del sidebar
   return (
-    <div className="grid grid-cols-[1fr_1px_auto] w-full border border-gray-300 rounded-lg overflow-hidden text-xs bg-white shadow-sm">
-      {/* Columna izquierda: etiquetas */}
+    <div className="inline-grid grid-cols-[auto_1px_auto] border border-gray-300 rounded-lg overflow-hidden text-xs bg-white shadow-sm">
       <div className="divide-y divide-gray-200">
         {[['Código', codigo], ['Revisión', revision], ['Fecha', fecha]].map(([label, value]) => (
           <div key={label} className="flex items-center gap-2 px-3 py-1.5">
@@ -20,9 +36,7 @@ export function DocRef({ codigo = 'PAU/06-A01', revision = '03' }) {
           </div>
         ))}
       </div>
-      {/* Divisor vertical */}
       <div className="bg-gray-200" />
-      {/* Columna derecha: ícono + título */}
       <div className="flex flex-col items-center justify-center px-3 gap-0.5">
         <span className="text-base">📋</span>
         <span className="font-bold text-gray-700 text-center leading-tight" style={{ fontSize: '10px' }}>

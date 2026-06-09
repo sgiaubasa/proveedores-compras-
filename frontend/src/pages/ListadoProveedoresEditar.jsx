@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import api from '../api'
 
 const ESTADO_OPTS = [
-  { val: 'A', label: 'A — Aprobado' },
-  { val: 'D', label: 'D — Dudoso' },
-  { val: 'E', label: 'E — Eliminado' }
+  { val: 'A', label: 'A — Aceptado' },
+  { val: 'B', label: 'B — Con seguimiento' },
+  { val: 'C', label: 'C — Rechazado' }
 ]
 
 const SERVICIO_VACIO  = () => ({ proveedor: '', servicio: '', estado: 'A' })

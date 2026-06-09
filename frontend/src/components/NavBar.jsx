@@ -117,7 +117,7 @@ export default function NavBar() {
             <div className="text-lg font-bold text-blue-800 leading-tight">AUBASA</div>
             <div className="text-xs text-gray-500 mt-0.5">Evaluación de Proveedores</div>
           </div>
-          <DocRef codigo="PAU/06-A01" revision="05" />
+          <DocRef codigo="PAU/06-A01" revision="05" sidebar />
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">

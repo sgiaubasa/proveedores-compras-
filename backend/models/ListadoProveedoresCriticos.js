@@ -3,13 +3,13 @@ const mongoose = require('mongoose')
 const itemServicioSchema = new mongoose.Schema({
   proveedor: { type: String, default: '' },
   servicio:  { type: String, default: '' },
-  estado:    { type: String, enum: ['A','D','E'], default: 'A' }
+  estado:    { type: String, enum: ['A','B','C'], default: 'A' }
 }, { _id: false })
 
 const itemInsumoSchema = new mongoose.Schema({
   proveedor: { type: String, default: '' },
   insumo:    { type: String, default: '' },
-  estado:    { type: String, enum: ['A','D','E'], default: 'A' }
+  estado:    { type: String, enum: ['A','B','C'], default: 'A' }
 }, { _id: false })
 
 const listadoSchema = new mongoose.Schema({

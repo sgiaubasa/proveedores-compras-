@@ -16,11 +16,11 @@ const SECTORES_BASE = [
   'Gerencia de Legales',
 ]
 
-const ESTADO_LABELS = { A: 'Aprobado', D: 'Dudoso', E: 'Eliminado' }
+const ESTADO_LABELS = { A: 'Aceptado', B: 'Con seguimiento', C: 'Rechazado' }
 const ESTADO_COLORS = {
-  A: 'bg-green-100 text-green-700',
-  D: 'bg-amber-100 text-amber-700',
-  E: 'bg-red-100 text-red-600'
+  A: 'bg-green-100 text-green-800 border border-green-300',
+  B: 'bg-amber-100 text-amber-800 border border-amber-300',
+  C: 'bg-red-100   text-red-800   border border-red-300'
 }
 
 export default function ListadoProveedores() {
@@ -68,11 +68,13 @@ export default function ListadoProveedores() {
         </div>
       </div>
 
-      {/* Leyenda estados */}
-      <div className="flex gap-3 mb-5 text-xs">
+      {/* Leyenda estados — alineada con criterios A-B-C */}
+      <div className="flex gap-2 mb-5 flex-wrap">
         {Object.entries(ESTADO_LABELS).map(([k, v]) => (
-          <span key={k} className={`px-2.5 py-1 rounded-full font-medium ${ESTADO_COLORS[k]}`}>
-            {k} = {v}
+          <span key={k} className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold ${ESTADO_COLORS[k]}`}>
+            <span className="font-bold">{k}</span>
+            <span className="text-gray-400">·</span>
+            {v}
           </span>
         ))}
       </div>
