@@ -502,7 +502,6 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
               </div>
             ))}
           </div>
-        </div>
 
           {/* Acción documentada */}
           {(() => {
