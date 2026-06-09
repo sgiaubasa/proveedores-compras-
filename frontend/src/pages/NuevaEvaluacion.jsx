@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { TRIMESTRES, TRIM_LABELS, estadoNota, clasificacionABC, ACCION_TIPOS, ACCION_ESTADOS } from '../utils/scoring'
+import { DocRef, CriteriosClasif } from '../components/ClasifLeyenda'
 import ScoreBar from '../components/ScoreBar'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
@@ -84,7 +85,10 @@ export default function NuevaEvaluacion() {
 
   return (
     <div className="p-8 max-w-3xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Nueva Evaluación de Servicio</h1>
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Nueva Evaluación de Servicio</h1>
+        <DocRef codigo="PAU/06-A01" revision="03" />
+      </div>
 
       <div className="flex items-center gap-3 mb-8">
         {[1, 2].map(n => (
@@ -206,6 +210,8 @@ export default function NuevaEvaluacion() {
             </div>
             {notaPreview !== null && <div className="mt-3"><ScoreBar nota={notaPreview} /></div>}
           </div>
+
+          <CriteriosClasif compact />
 
           <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-xs text-gray-600 flex gap-4 flex-wrap">
             <span>📌 <strong>1</strong> = Muy deficiente</span>

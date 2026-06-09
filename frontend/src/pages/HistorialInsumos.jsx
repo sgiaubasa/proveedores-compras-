@@ -3,6 +3,7 @@ import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { BadgeNota, BadgeTrimestre } from '../components/Badge'
 import { TRIMESTRES, clasificacionABC, ACCION_TIPOS, ACCION_ESTADOS } from '../utils/scoring'
+import ClasifLeyenda from '../components/ClasifLeyenda'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
 
@@ -55,7 +56,8 @@ export default function HistorialInsumos() {
 
   return (
     <div className="p-8 max-w-6xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Historial — Insumos</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-4">Historial — Insumos</h1>
+      <ClasifLeyenda codigo="PAU/06-A01" revision="03" />
 
       <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 flex flex-wrap gap-3 items-end">
         <div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { TRIMESTRES, TRIM_LABELS, estadoNota, clasificacionABC, ACCION_TIPOS } from '../utils/scoring'
+import { DocRef, CriteriosClasif } from '../components/ClasifLeyenda'
 import ScoreBar from '../components/ScoreBar'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
@@ -84,7 +85,10 @@ export default function NuevoInsumo() {
 
   return (
     <div className="p-8 max-w-2xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Nueva Evaluación de Insumo</h1>
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Nueva Evaluación de Insumo</h1>
+        <DocRef codigo="PAU/06-A01" revision="03" />
+      </div>
 
       {error && <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>}
 
@@ -212,7 +216,8 @@ export default function NuevoInsumo() {
             </div>
           ))}
 
-          <div className="pt-2 border-t border-gray-200">
+          <div className="pt-2 border-t border-gray-200 space-y-2">
+            <CriteriosClasif compact />
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm font-semibold text-gray-700">Nota Final</span>
               {notaPreview !== null && (
