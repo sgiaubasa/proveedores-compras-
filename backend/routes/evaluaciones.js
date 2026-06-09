@@ -62,12 +62,14 @@ router.put('/:id', auth, async (req, res) => {
         return res.status(403).json({ error: 'Sin permiso para editar esta evaluación' })
     }
 
-    const { trimestre, anio, areas, obs, items, userId } = req.body
+    const { trimestre, anio, areas, obs, items, userId, cantidadPrestaciones, accion } = req.body
     if (trimestre) ev.trimestre = trimestre
     if (anio)      ev.anio      = anio
     if (areas)     ev.areas     = areas
     if (obs !== undefined) ev.obs = obs
     if (items)     ev.items     = items
+    if (cantidadPrestaciones !== undefined) ev.cantidadPrestaciones = cantidadPrestaciones
+    if (accion !== undefined) ev.accion = accion
     // Solo admin puede cambiar el evaluador
     if (userId && req.usuario.rol === 'admin') ev.userId = userId
     await ev.save()
@@ -92,15 +94,36 @@ router.get('/resumen-anual/:etId/:anio', auth, async (req, res) => {
     anio: Number(req.params.anio)
   }).populate('userId', 'nombre area').sort({ trimestre: 1 })
 
-  const porTrimestre = { '1T': null, '2T': null, '3T': null, '4T': null }
-  evs.forEach(ev => { porTrimestre[ev.trimestre] = ev.nota_final })
+  const porTrimestre        = { '1T': null, '2T': null, '3T': null, '4T': null }
+  const prestacionesPorTrim = { '1T': null, '2T': null, '3T': null, '4T': null }
+  evs.forEach(ev => {
+    porTrimestre[ev.trimestre]        = ev.nota_final
+    prestacionesPorTrim[ev.trimestre] = ev.cantidadPrestaciones || 1
+  })
 
   const notas = Object.values(porTrimestre).filter(v => v !== null)
   const promedio_anual = notas.length
     ? Math.round((notas.reduce((s, v) => s + v, 0) / notas.length) * 100) / 100
     : null
 
-  res.json({ evaluaciones: evs, porTrimestre, promedio_anual, anio: Number(req.params.anio) })
+  // Promedio ponderado por cantidad de prestaciones
+  let sumPond = 0, sumPrestaciomes = 0
+  evs.forEach(ev => {
+    const p = ev.cantidadPrestaciones || 1
+    sumPond        += ev.nota_final * p
+    sumPrestaciomes += p
+  })
+  const promedio_ponderado = sumPrestaciomes > 0
+    ? Math.round((sumPond / sumPrestaciomes) * 100) / 100
+    : null
+
+  const totalPrestaciones = evs.reduce((s, ev) => s + (ev.cantidadPrestaciones || 1), 0)
+
+  res.json({
+    evaluaciones: evs, porTrimestre, prestacionesPorTrim,
+    promedio_anual, promedio_ponderado, totalPrestaciones,
+    anio: Number(req.params.anio)
+  })
 })
 
 module.exports = router

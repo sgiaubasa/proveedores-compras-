@@ -9,6 +9,15 @@ const itemResultSchema = new mongoose.Schema({
   obs:         String
 }, { _id: false })
 
+const accionSchema = new mongoose.Schema({
+  tipo:        { type: String, enum: ['plan_mejora', 'suspension', 'cambio_proveedor', 'otra'] },
+  descripcion: String,
+  fechaImpl:   Date,
+  responsable: String,
+  estado:      { type: String, enum: ['pendiente', 'en_curso', 'cerrada'], default: 'pendiente' },
+  fechaCierre: Date
+}, { _id: false })
+
 const evaluacionSchema = new mongoose.Schema({
   etId:      { type: mongoose.Schema.Types.ObjectId, ref: 'EspecTecnica', required: true },
   userId:    { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
@@ -18,6 +27,10 @@ const evaluacionSchema = new mongoose.Schema({
   sitio:     { type: String, default: '' },
   items:     [itemResultSchema],
   obs:       String,
+  // Cantidad de prestaciones recibidas en el período (OM-106 IRAM)
+  cantidadPrestaciones: { type: Number, default: 1, min: 1 },
+  // Acción documentada ante desempeño deficiente (OM-106 IRAM)
+  accion:    { type: accionSchema, default: null },
   // Calculados al guardar
   nota_final: Number   // Σ(puntaje_i × ponderacion_i)
 }, { timestamps: true })

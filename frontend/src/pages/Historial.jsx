@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { BadgeNota, BadgeTrimestre } from '../components/Badge'
-import { TRIM_LABELS, TRIMESTRES } from '../utils/scoring'
+import { TRIM_LABELS, TRIMESTRES, clasificacionABC, ACCION_TIPOS, ACCION_ESTADOS } from '../utils/scoring'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
 
@@ -121,7 +121,8 @@ export default function Historial() {
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Áreas</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Sitio</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Evaluador</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Nota Final</th>
+                <th className="text-center px-4 py-3 font-semibold text-gray-600">Prest.</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-600">Nota / Clasif.</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
@@ -146,7 +147,20 @@ export default function Historial() {
                     <div className="font-medium text-gray-800">{ev.userId?.nombre || '—'}</div>
                     {ev.userId?.area && <div className="text-gray-400">{ev.userId.area}</div>}
                   </td>
-                  <td className="px-4 py-3"><BadgeNota nota={ev.nota_final} /></td>
+                  <td className="px-4 py-3 text-center text-sm font-medium text-gray-700">
+                    {ev.cantidadPrestaciones || 1}
+                  </td>
+                  <td className="px-4 py-3">
+                    <BadgeNota nota={ev.nota_final} />
+                    {(() => { const c = clasificacionABC(ev.nota_final); return c ? (
+                      <span className={`mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-bold ${c.cls}`}>
+                        {c.letra} · {c.label}
+                      </span>
+                    ) : null })()}
+                    {ev.accion?.tipo && (
+                      <div className="mt-1 text-xs text-red-600 font-medium">📋 Acción documentada</div>
+                    )}
+                  </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <button onClick={() => setDetalle(ev)} className="text-xs text-blue-600 hover:underline">Detalle</button>
@@ -201,15 +215,33 @@ export default function Historial() {
                     <div className={`text-xl font-bold ${resumen.porTrimestre[t] !== null ? (resumen.porTrimestre[t] >= 4 ? 'text-green-600' : resumen.porTrimestre[t] >= 3 ? 'text-amber-600' : 'text-red-600') : 'text-gray-300'}`}>
                       {resumen.porTrimestre[t] !== null ? resumen.porTrimestre[t]?.toFixed(2) : '—'}
                     </div>
+                    {resumen.prestacionesPorTrim?.[t] !== null && resumen.prestacionesPorTrim?.[t] !== undefined && (
+                      <div className="text-xs text-gray-400 mt-1">{resumen.prestacionesPorTrim[t]} prest.</div>
+                    )}
                   </div>
                 ))}
               </div>
-              <div className="text-center bg-blue-50 rounded-xl p-4 border border-blue-200">
-                <div className="text-xs text-blue-600 mb-1 uppercase tracking-wide">Promedio Anual</div>
-                <div className={`text-4xl font-bold ${resumen.promedio_anual >= 4 ? 'text-green-600' : resumen.promedio_anual >= 3 ? 'text-amber-600' : 'text-red-600'}`}>
-                  {resumen.promedio_anual !== null ? resumen.promedio_anual.toFixed(2) : '—'}
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="text-center bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <div className="text-xs text-blue-600 mb-1 uppercase tracking-wide">Promedio Anual</div>
+                  <div className={`text-3xl font-bold ${resumen.promedio_anual >= 4 ? 'text-green-600' : resumen.promedio_anual >= 3 ? 'text-amber-600' : 'text-red-600'}`}>
+                    {resumen.promedio_anual !== null ? resumen.promedio_anual.toFixed(2) : '—'}
+                  </div>
+                  <BadgeNota nota={resumen.promedio_anual} />
                 </div>
-                <BadgeNota nota={resumen.promedio_anual} />
+                <div className="text-center bg-indigo-50 rounded-xl p-4 border border-indigo-200">
+                  <div className="text-xs text-indigo-600 mb-1 uppercase tracking-wide">Desempeño Ponderado</div>
+                  <div className={`text-3xl font-bold ${(resumen.promedio_ponderado || 0) >= 4 ? 'text-green-600' : (resumen.promedio_ponderado || 0) >= 3 ? 'text-amber-600' : 'text-red-600'}`}>
+                    {resumen.promedio_ponderado !== null ? resumen.promedio_ponderado?.toFixed(2) : '—'}
+                  </div>
+                  {(() => { const c = clasificacionABC(resumen.promedio_ponderado); return c ? (
+                    <span className={`inline-flex items-center gap-1 mt-1 px-2.5 py-0.5 rounded border text-sm font-bold ${c.cls}`}>
+                      Clasificación {c.letra} — {c.label}
+                    </span>
+                  ) : null })()}
+                  <div className="text-xs text-indigo-500 mt-1">{resumen.totalPrestaciones || 0} prestaciones totales</div>
+                </div>
               </div>
             </div>
           </div>
@@ -235,11 +267,37 @@ function ModalDetalle({ ev, onClose }) {
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
         </div>
         <div className="p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <BadgeNota nota={ev.nota_final} />
-            <span className="text-xs text-gray-500">Evaluado por: {ev.userId?.nombre}</span>
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <BadgeNota nota={ev.nota_final} />
+              {(() => { const c = clasificacionABC(ev.nota_final); return c ? (
+                <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded border text-sm font-bold ${c.cls}`}>
+                  Clasificación {c.letra} — {c.label}
+                </span>
+              ) : null })()}
+            </div>
+            <div className="text-right text-xs text-gray-500">
+              <div>Evaluado por: <strong>{ev.userId?.nombre}</strong></div>
+              <div className="text-gray-400">{ev.cantidadPrestaciones || 1} prestación(es) en el período</div>
+            </div>
           </div>
           {ev.obs && <p className="text-sm text-gray-600 italic bg-gray-50 p-3 rounded-lg">"{ev.obs}"</p>}
+          {ev.accion?.tipo && (
+            <div className="border border-red-200 bg-red-50 rounded-lg p-3 space-y-1">
+              <div className="flex items-center gap-2 text-sm font-semibold text-red-800">
+                <span>📋</span>
+                <span>Acción documentada — {ACCION_TIPOS.find(t => t.value === ev.accion.tipo)?.label}</span>
+                <span className={`ml-auto text-xs px-2 py-0.5 rounded-full font-medium ${ev.accion.estado === 'cerrada' ? 'bg-green-100 text-green-700' : ev.accion.estado === 'en_curso' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}`}>
+                  {ACCION_ESTADOS.find(e => e.value === ev.accion.estado)?.label || ev.accion.estado}
+                </span>
+              </div>
+              {ev.accion.descripcion && <p className="text-xs text-red-700">{ev.accion.descripcion}</p>}
+              <div className="flex gap-4 text-xs text-gray-500">
+                {ev.accion.responsable && <span>Responsable: <strong>{ev.accion.responsable}</strong></span>}
+                {ev.accion.fechaImpl && <span>Fecha impl.: <strong>{new Date(ev.accion.fechaImpl).toLocaleDateString('es-AR')}</strong></span>}
+              </div>
+            </div>
+          )}
           <table className="w-full text-sm border-collapse">
             <thead className="bg-gray-50">
               <tr>
@@ -287,6 +345,8 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
   const [sitio, setSitio]         = useState(ev.sitio || '')
   const [obs, setObs]             = useState(ev.obs || '')
   const [userId, setUserId]       = useState(ev.userId?._id || ev.userId || '')
+  const [cantidadPrestaciones, setCantidadPrestaciones] = useState(ev.cantidadPrestaciones || 1)
+  const [accion, setAccion]       = useState(ev.accion || { tipo: '', descripcion: '', fechaImpl: '', responsable: '', estado: 'pendiente' })
   const [puntajes, setPuntajes]   = useState(Object.fromEntries(ev.items.map(it => [it.n, it.puntaje])))
   const [obsItems, setObsItems]   = useState(Object.fromEntries(ev.items.map(it => [it.n, it.obs || ''])))
   const [saving, setSaving]       = useState(false)
@@ -308,7 +368,8 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
         ponderacion: it.ponderacion,
         obs: obsItems[it.n] || ''
       }))
-      const payload = { trimestre, anio, areas, sitio, obs, items }
+      const payload = { trimestre, anio, areas, sitio, obs, items, cantidadPrestaciones }
+      if (accion.tipo) payload.accion = accion
       if (esAdmin && userId) payload.userId = userId
       const r = await api.put(`/evaluaciones/${ev._id}`, payload)
       onGuardado({ ...ev, ...r.data })
@@ -398,6 +459,18 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none" />
           </div>
 
+          {/* Cantidad de prestaciones */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Prestaciones recibidas en el período
+              <span className="ml-1 text-xs text-gray-400 font-normal">(veces que prestó el servicio/entregó el producto)</span>
+            </label>
+            <input type="number" value={cantidadPrestaciones}
+              onChange={e => setCantidadPrestaciones(Math.max(1, Number(e.target.value)))}
+              min="1" step="1"
+              className="w-28 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          </div>
+
           {/* Ítems */}
           <div className="space-y-3">
             <div className="flex justify-between items-center">
@@ -429,6 +502,66 @@ function ModalEditarServicio({ ev, onClose, onGuardado, usuarios = [], esAdmin =
               </div>
             ))}
           </div>
+        </div>
+
+          {/* Acción documentada */}
+          {(() => {
+            const nota = notaPreview
+            const mostrar = nota !== null && nota < 3
+            const tieneAccion = !!accion.tipo
+            if (!mostrar && !tieneAccion) return null
+            return (
+              <div className={`border-2 rounded-xl p-4 space-y-3 ${mostrar ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50'}`}>
+                <div className="flex items-center gap-2">
+                  <span>{mostrar ? '⚠️' : '📋'}</span>
+                  <h3 className={`text-sm font-semibold ${mostrar ? 'text-red-800' : 'text-gray-700'}`}>
+                    Acción documentada {mostrar ? '— requerida por Clasificación C' : ''}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {ACCION_TIPOS.map(t => (
+                    <button key={t.value} type="button" onClick={() => setAccion(a => ({ ...a, tipo: t.value }))}
+                      className={`px-3 py-1 text-xs rounded-lg border font-medium transition-colors ${accion.tipo === t.value ? 'bg-red-600 text-white border-red-600' : 'border-gray-300 text-gray-700 hover:border-red-400'}`}>
+                      {t.label}
+                    </button>
+                  ))}
+                  {accion.tipo && <button type="button" onClick={() => setAccion(a => ({ ...a, tipo: '' }))}
+                    className="text-xs text-gray-400 hover:text-gray-600">✕ quitar</button>}
+                </div>
+                {accion.tipo && (
+                  <>
+                    <textarea value={accion.descripcion || ''} onChange={e => setAccion(a => ({ ...a, descripcion: e.target.value }))}
+                      rows={2} placeholder="Descripción de la acción…"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-red-300 resize-none" />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Responsable</label>
+                        <input type="text" value={accion.responsable || ''} onChange={e => setAccion(a => ({ ...a, responsable: e.target.value }))}
+                          placeholder="Nombre o área…"
+                          className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-red-300" />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Fecha de implementación</label>
+                        <input type="date" value={accion.fechaImpl ? accion.fechaImpl.substring(0,10) : ''} onChange={e => setAccion(a => ({ ...a, fechaImpl: e.target.value }))}
+                          className="w-full border border-gray-300 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-red-300" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">Estado de la acción</label>
+                      <div className="flex gap-2">
+                        {ACCION_ESTADOS.map(s => (
+                          <button key={s.value} type="button" onClick={() => setAccion(a => ({ ...a, estado: s.value }))}
+                            className={`px-3 py-1 text-xs rounded-lg border font-medium transition-colors ${accion.estado === s.value ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 text-gray-700 hover:border-blue-400'}`}>
+                            {s.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            )
+          })()}
         </div>
 
         <div className="p-5 border-t border-gray-200 flex justify-end gap-3 sticky bottom-0 bg-white">

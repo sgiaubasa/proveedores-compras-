@@ -24,5 +24,26 @@ export function barColor(nota) {
   return 'bg-red-500'
 }
 
+// Clasificación A-B-C según OM-106 IRAM
+export function clasificacionABC(nota) {
+  if (nota === null || nota === undefined) return null
+  if (nota >= 4) return { letra: 'A', label: 'Aceptado',    cls: 'bg-green-100 text-green-800 border-green-300' }
+  if (nota >= 3) return { letra: 'B', label: 'Seguimiento', cls: 'bg-amber-100 text-amber-800 border-amber-300' }
+  return               { letra: 'C', label: 'Rechazado',   cls: 'bg-red-100   text-red-800   border-red-300'   }
+}
+
+export const ACCION_TIPOS = [
+  { value: 'plan_mejora',      label: 'Plan de mejora' },
+  { value: 'suspension',       label: 'Suspensión temporal' },
+  { value: 'cambio_proveedor', label: 'Cambio de proveedor' },
+  { value: 'otra',             label: 'Otra acción' },
+]
+
+export const ACCION_ESTADOS = [
+  { value: 'pendiente', label: 'Pendiente' },
+  { value: 'en_curso',  label: 'En curso' },
+  { value: 'cerrada',   label: 'Cerrada' },
+]
+
 export const TRIMESTRES = ['1T','2T','3T','4T']
 export const TRIM_LABELS = { '1T':'1° Trimestre (Ene-Mar)', '2T':'2° Trimestre (Abr-Jun)', '3T':'3° Trimestre (Jul-Sep)', '4T':'4° Trimestre (Oct-Dic)' }
