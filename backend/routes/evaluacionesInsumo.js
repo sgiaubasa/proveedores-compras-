@@ -50,7 +50,8 @@ router.put('/:id', auth, async (req, res) => {
     }
 
     const campos = ['proveedorNombre','descripcionInsumo','trimestre','anio','areas','obs',
-                    'cotizacion','calidad_cantidad','plazo_entrega','seriedad','tiempo_respuesta']
+                    'cotizacion','calidad_cantidad','plazo_entrega','seriedad','tiempo_respuesta',
+                    'cantidadPrestaciones','accion']
     campos.forEach(c => { if (req.body[c] !== undefined) ev[c] = req.body[c] })
     // Solo admin puede cambiar el evaluador
     if (req.body.userId && req.usuario.rol === 'admin') ev.userId = req.body.userId

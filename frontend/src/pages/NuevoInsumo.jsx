@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
-import { TRIMESTRES, TRIM_LABELS, estadoNota } from '../utils/scoring'
+import { TRIMESTRES, TRIM_LABELS, estadoNota, clasificacionABC, ACCION_TIPOS } from '../utils/scoring'
 import ScoreBar from '../components/ScoreBar'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
@@ -51,6 +51,8 @@ export default function NuevoInsumo() {
   const [areas, setAreas]         = useState([])
   const [obs, setObs]             = useState('')
   const [puntajes, setPuntajes]   = useState({})
+  const [cantidadPrestaciones, setCantidadPrestaciones] = useState(1)
+  const [accion, setAccion]       = useState({ tipo: '', descripcion: '', fechaImpl: '', responsable: '', estado: 'pendiente' })
 
   const notaPreview = CRITERIOS.every(c => puntajes[c.key] !== undefined)
     ? CRITERIOS.reduce((s, c) => s + puntajes[c.key] * c.ponderacion, 0)
@@ -64,10 +66,11 @@ export default function NuevoInsumo() {
     setSaving(true)
     setError(null)
     try {
-      const payload = { proveedorNombre: proveedor, descripcionInsumo: insumo, fecha, trimestre, anio, areas, obs }
+      const payload = { proveedorNombre: proveedor, descripcionInsumo: insumo, fecha, trimestre, anio, areas, obs, cantidadPrestaciones }
       CRITERIOS.forEach(c => {
         payload[c.key] = { puntaje: puntajes[c.key], ponderacion: c.ponderacion }
       })
+      if (accion.tipo) payload.accion = accion
       await api.post('/evaluaciones-insumo', payload)
       navigate('/historial-insumos')
     } catch (e) {
@@ -222,11 +225,66 @@ export default function NuevoInsumo() {
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-xl p-5">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
-          <textarea value={obs} onChange={e => setObs(e.target.value)} rows={2}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none" />
+        <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Cantidad de entregas / pedidos recibidos en el período
+              <span className="ml-1 text-xs text-gray-400 font-normal">(cuántas veces entregó el insumo este trimestre)</span>
+            </label>
+            <input type="number" value={cantidadPrestaciones}
+              onChange={e => setCantidadPrestaciones(Math.max(1, Number(e.target.value)))}
+              min="1" step="1"
+              className="w-32 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+            <textarea value={obs} onChange={e => setObs(e.target.value)} rows={2}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none" />
+          </div>
         </div>
+
+        {/* Acción documentada — aparece cuando nota < 3 */}
+        {notaPreview !== null && notaPreview < 3 && (
+          <div className="border-2 border-red-300 bg-red-50 rounded-xl p-5 space-y-4">
+            <div className="flex items-start gap-2">
+              <span className="text-lg">⚠️</span>
+              <div>
+                <h3 className="font-semibold text-red-800">Clasificación C — Acción documentada requerida</h3>
+                <p className="text-xs text-red-600 mt-0.5">La nota es inferior a 3. Documentá la acción a tomar según ISO 9001 (OM-106 IRAM).</p>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de acción *</label>
+              <div className="flex flex-wrap gap-2">
+                {ACCION_TIPOS.map(t => (
+                  <button key={t.value} type="button" onClick={() => setAccion(a => ({ ...a, tipo: t.value }))}
+                    className={`px-3 py-1.5 text-sm rounded-lg border font-medium transition-colors ${accion.tipo === t.value ? 'bg-red-600 text-white border-red-600' : 'border-gray-300 text-gray-700 hover:border-red-400'}`}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Descripción de la acción</label>
+              <textarea value={accion.descripcion} onChange={e => setAccion(a => ({ ...a, descripcion: e.target.value }))}
+                rows={2} placeholder="Describí el plan o acción a ejecutar…"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-300 resize-none" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Responsable</label>
+                <input type="text" value={accion.responsable} onChange={e => setAccion(a => ({ ...a, responsable: e.target.value }))}
+                  placeholder="Nombre o área…"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-300" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de implementación</label>
+                <input type="date" value={accion.fechaImpl} onChange={e => setAccion(a => ({ ...a, fechaImpl: e.target.value }))}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-300" />
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-end gap-3">
           <button type="button" onClick={() => navigate(-1)}

@@ -31,7 +31,18 @@ const evaluacionInsumoSchema = new mongoose.Schema({
   tiempo_respuesta: criterioSchema,
 
   nota_final: Number,
-  obs:        String
+  obs:        String,
+  // Cantidad de entregas/pedidos recibidos en el período (OM-106 IRAM)
+  cantidadPrestaciones: { type: Number, default: 1, min: 1 },
+  // Acción documentada ante desempeño deficiente (OM-106 IRAM)
+  accion: {
+    tipo:        { type: String, enum: ['plan_mejora', 'suspension', 'cambio_proveedor', 'otra'] },
+    descripcion: String,
+    fechaImpl:   Date,
+    responsable: String,
+    estado:      { type: String, enum: ['pendiente', 'en_curso', 'cerrada'], default: 'pendiente' },
+    fechaCierre: Date
+  }
 }, { timestamps: true })
 
 evaluacionInsumoSchema.pre('save', function (next) {
