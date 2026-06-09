@@ -3,7 +3,7 @@ import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { BadgeNota, BadgeTrimestre } from '../components/Badge'
 import { TRIM_LABELS, TRIMESTRES, clasificacionABC, ACCION_TIPOS, ACCION_ESTADOS } from '../utils/scoring'
-import ClasifLeyenda from '../components/ClasifLeyenda'
+import { CriteriosClasif } from '../components/ClasifLeyenda'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
 
@@ -72,7 +72,7 @@ export default function Historial() {
   return (
     <div className="p-8 max-w-6xl">
       <h1 className="text-2xl font-bold text-gray-900 mb-4">Historial — Servicios</h1>
-      <ClasifLeyenda codigo="PAU/06-A01" revision="05" />
+      <div className="mb-6"><CriteriosClasif /></div>
 
       {/* Filtros */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 flex flex-wrap gap-3 items-end">

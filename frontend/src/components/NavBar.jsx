@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import api from '../api'
+import { DocRef } from './ClasifLeyenda'
 
 const links = [
   { to: '/',                  label: 'Panel',               icon: '◉' },
@@ -170,6 +171,11 @@ export default function NavBar() {
       </aside>
 
       {modalPerfil && <ModalPerfil onClose={() => setModalPerfil(false)} />}
+
+      {/* Referencia documental — fija arriba a la derecha en todas las páginas */}
+      <div className="fixed top-3 right-4 z-20">
+        <DocRef codigo="PAU/06-A01" revision="05" />
+      </div>
     </>
   )
 }

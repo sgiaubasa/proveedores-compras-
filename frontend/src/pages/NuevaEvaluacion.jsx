@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../context/AuthContext'
 import { TRIMESTRES, TRIM_LABELS, estadoNota, clasificacionABC, ACCION_TIPOS, ACCION_ESTADOS } from '../utils/scoring'
-import { DocRef, CriteriosClasif } from '../components/ClasifLeyenda'
+import { CriteriosClasif } from '../components/ClasifLeyenda'
 import ScoreBar from '../components/ScoreBar'
 import AreasSelector from '../components/AreasSelector'
 import PuntajeSelector from '../components/PuntajeSelector'
@@ -85,10 +85,7 @@ export default function NuevaEvaluacion() {
 
   return (
     <div className="p-8 max-w-3xl">
-      <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Nueva Evaluación de Servicio</h1>
-        <DocRef codigo="PAU/06-A01" revision="05" />
-      </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Nueva Evaluación de Servicio</h1>
 
       <div className="flex items-center gap-3 mb-8">
         {[1, 2].map(n => (
