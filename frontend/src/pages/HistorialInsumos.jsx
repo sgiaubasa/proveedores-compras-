@@ -57,7 +57,7 @@ export default function HistorialInsumos() {
   return (
     <div className="p-8 max-w-6xl">
       <h1 className="text-2xl font-bold text-gray-900 mb-4">Historial — Insumos</h1>
-      <ClasifLeyenda codigo="PAU/06-A01" revision="03" />
+      <ClasifLeyenda codigo="PAU/06-A01" revision="05" />
 
       <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 flex flex-wrap gap-3 items-end">
         <div>

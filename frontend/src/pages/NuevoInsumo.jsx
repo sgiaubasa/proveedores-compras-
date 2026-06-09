@@ -87,7 +87,7 @@ export default function NuevoInsumo() {
     <div className="p-8 max-w-2xl">
       <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Nueva Evaluación de Insumo</h1>
-        <DocRef codigo="PAU/06-A01" revision="03" />
+        <DocRef codigo="PAU/06-A01" revision="05" />
       </div>
 
       {error && <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>}

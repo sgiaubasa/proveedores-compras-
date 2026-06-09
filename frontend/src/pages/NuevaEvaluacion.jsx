@@ -87,7 +87,7 @@ export default function NuevaEvaluacion() {
     <div className="p-8 max-w-3xl">
       <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Nueva Evaluación de Servicio</h1>
-        <DocRef codigo="PAU/06-A01" revision="03" />
+        <DocRef codigo="PAU/06-A01" revision="05" />
       </div>
 
       <div className="flex items-center gap-3 mb-8">
