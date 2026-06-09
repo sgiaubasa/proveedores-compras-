@@ -112,9 +112,12 @@ export default function NavBar() {
   return (
     <>
       <aside className="fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-200 flex flex-col z-10">
-        <div className="px-5 py-5 border-b border-gray-100">
-          <div className="text-lg font-bold text-blue-800 leading-tight">AUBASA</div>
-          <div className="text-xs text-gray-500 mt-0.5">Evaluación de Proveedores</div>
+        <div className="px-5 py-4 border-b border-gray-100 space-y-3">
+          <div>
+            <div className="text-lg font-bold text-blue-800 leading-tight">AUBASA</div>
+            <div className="text-xs text-gray-500 mt-0.5">Evaluación de Proveedores</div>
+          </div>
+          <DocRef codigo="PAU/06-A01" revision="05" />
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
@@ -171,11 +174,6 @@ export default function NavBar() {
       </aside>
 
       {modalPerfil && <ModalPerfil onClose={() => setModalPerfil(false)} />}
-
-      {/* Referencia documental — fija arriba a la derecha en todas las páginas */}
-      <div className="fixed top-3 right-4 z-20">
-        <DocRef codigo="PAU/06-A01" revision="05" />
-      </div>
     </>
   )
 }

@@ -10,7 +10,7 @@ export function DocRef({ codigo = 'PAU/06-A01', revision = '03' }) {
   const fecha = `${meses[hoy.getMonth()]}. ${hoy.getFullYear()}`
 
   return (
-    <div className="inline-grid grid-cols-[auto_1px_auto] border border-gray-300 rounded-lg overflow-hidden text-xs bg-white shadow-sm">
+    <div className="grid grid-cols-[1fr_1px_auto] w-full border border-gray-300 rounded-lg overflow-hidden text-xs bg-white shadow-sm">
       {/* Columna izquierda: etiquetas */}
       <div className="divide-y divide-gray-200">
         {[['Código', codigo], ['Revisión', revision], ['Fecha', fecha]].map(([label, value]) => (
