@@ -4,10 +4,7 @@
  */
 
 // ── Cuadro de referencia documental (estilo ISO) ─────────────────────────────
-export function DocRef({ codigo = 'PAU/06-A01', revision = '03', sidebar = false }) {
-  const hoy   = new Date()
-  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
-  const fecha = `${meses[hoy.getMonth()]}. ${hoy.getFullYear()}`
+export function DocRef({ codigo = 'PAU/06-A01', revision = '05', fecha = '06.Ene.2026', sidebar = false }) {
 
   // Versión compacta para el sidebar: sin columna de ícono, todo en ancho completo
   if (sidebar) {
